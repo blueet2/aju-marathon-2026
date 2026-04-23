@@ -174,7 +174,7 @@ nav{display:flex;gap:2px}
 .gal-item:hover .gal-item-ov{background:rgba(0,63,136,.4)}
 .gal-item-lbl{color:#fff;font-size:12px;font-weight:600;opacity:0;transition:opacity .2s}
 .gal-item:hover .gal-item-lbl{opacity:1}
-.upload-area{border:2px dashed var(--sky);border-radius:10px;padding:2.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--blue-light);margin-bottom:1rem}
+.upload-area{border:2px dashed var(--sky);border-radius:10px;padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--blue-light);display:block;width:100%}
 .upload-area:hover{border-color:var(--blue-mid);background:#e0eefa}
 .upload-area input[type=file]{display:none}
 .upload-label{font-size:15px;font-weight:600;color:var(--blue);margin-bottom:6px}
@@ -563,6 +563,12 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
         <div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div>
       </div>
 
+    <!-- 갤러리 -->
+    <div style="margin-top:70px">
+      <div class="bhead">
+        <div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div>
+      </div>
+
       <!-- 업로드 영역 -->
       <label class="upload-area" for="gal-file-input">
         <input type="file" id="gal-file-input" accept="image/*" multiple onchange="uploadImages(this.files)">
@@ -570,15 +576,15 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
         <div class="upload-label">클릭하여 사진 업로드</div>
         <div class="upload-sub">JPG, PNG, GIF · 최대 10MB · 여러 장 동시 업로드 가능</div>
       </label>
+
+      <!-- 업로드 진행 -->
       <div class="upload-progress" id="upload-progress">
         <div style="font-size:13px;color:var(--blue-mid);margin-bottom:6px;font-weight:600" id="upload-status">업로드 중...</div>
         <div class="upload-bar"><div class="upload-bar-fill" id="upload-bar-fill"></div></div>
       </div>
 
       <!-- 사진 그리드 -->
-      <div class="gal-grid" id="gal-grid">
-        <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px;font-weight:300" id="gal-loading">사진을 불러오는 중...</div>
-      </div>
+      <div id="gal-grid-wrap" style="margin-top:1.5rem"></div>
     </div>
   </div>
 </div>
@@ -850,29 +856,34 @@ loadPosts()
 
 // ── 갤러리 ──
 async function loadGallery() {
-  const grid = document.getElementById('gal-grid')
-  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px">불러오는 중...</div>'
+  const wrap = document.getElementById('gal-grid-wrap')
+  if (!wrap) return
+  wrap.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--g500);font-size:13px">불러오는 중...</div>'
 
   const { data, error } = await db.storage.from('gallery').list('', {
     limit: 100, sortBy: { column: 'created_at', order: 'desc' }
   })
 
-  if (error || !data || data.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px;font-weight:300">
-      📷 아직 업로드된 사진이 없습니다<br>대회 당일 사진을 올려주세요!</div>`
+  const files = (data || []).filter(f => f.name && f.name !== '.emptyFolderPlaceholder')
+
+  if (error || files.length === 0) {
+    wrap.innerHTML = `<div style="text-align:center;padding:2.5rem;color:var(--g500);font-size:13px;font-weight:300;background:var(--g50);border-radius:8px;border:1px solid var(--g200)">
+      📷 아직 업로드된 사진이 없습니다<br><span style="font-size:12px">대회 당일 사진을 올려주세요!</span></div>`
     return
   }
 
-  grid.innerHTML = data
-    .filter(f => f.name && f.name !== '.emptyFolderPlaceholder')
-    .map(f => {
-      const url = db.storage.from('gallery').getPublicUrl(f.name).data.publicUrl
-      const name = f.name.replace(/^\d+_/, '').replace(/\.[^.]+$/, '')
-      return `<div class="gal-item" onclick="openImg('${url}')">
-        <img src="${url}" alt="${name}" loading="lazy">
-        <div class="gal-item-ov"><span class="gal-item-lbl">${name}</span></div>
-      </div>`
-    }).join('')
+  const grid = document.createElement('div')
+  grid.className = 'gal-grid'
+  grid.innerHTML = files.map(f => {
+    const url = db.storage.from('gallery').getPublicUrl(f.name).data.publicUrl
+    const name = decodeURIComponent(f.name).replace(/^\d+_[a-z0-9]+\./, '').replace(/\.[^.]+$/, '')
+    return `<div class="gal-item" onclick="openImg('${url}')">
+      <img src="${url}" alt="${name}" loading="lazy">
+      <div class="gal-item-ov"><span class="gal-item-lbl">${name}</span></div>
+    </div>`
+  }).join('')
+  wrap.innerHTML = ''
+  wrap.appendChild(grid)
 }
 
 async function uploadImages(files) {
