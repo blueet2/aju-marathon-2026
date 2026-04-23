@@ -182,11 +182,50 @@ nav{display:flex;gap:2px}
 .upload-progress{margin-top:1rem;display:none}
 .upload-bar{width:100%;height:6px;background:var(--g200);border-radius:3px;overflow:hidden}
 .upload-bar-fill{height:100%;background:var(--blue-mid);border-radius:3px;width:0%;transition:width .3s}
-/* 이미지 모달 */
-.img-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center}
-.img-modal-ov.show{display:flex}
-.img-modal-ov img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain}
-.img-modal-close{position:absolute;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;line-height:1}
+/* 댓글 모달 */
+.post-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:80px 1rem 2rem;overflow-y:auto}
+.post-modal-ov.show{display:flex}
+.post-modal{background:#fff;border-radius:12px;width:100%;max-width:680px;overflow:hidden;position:relative}
+.pm-header{background:var(--g800);padding:1.4rem 1.8rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.pm-cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;margin-bottom:6px;display:inline-block}
+.pm-title{font-size:17px;font-weight:700;color:#fff;line-height:1.4}
+.pm-meta{font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;font-weight:300}
+.pm-close{color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;background:none;border:none;line-height:1;flex-shrink:0;padding:2px}
+.pm-close:hover{color:#fff}
+.pm-body{padding:1.6rem 1.8rem}
+/* 댓글 목록 */
+.cm-list{display:flex;flex-direction:column;gap:0;margin-bottom:1.5rem}
+.cm{padding:1rem 0;border-bottom:1px solid var(--g100)}
+.cm:last-child{border-bottom:none}
+.cm-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.cm-author{font-size:13px;font-weight:600;color:var(--black)}
+.cm-date{font-size:11px;color:var(--g500);font-weight:300}
+.cm-text{font-size:13px;color:var(--g700);line-height:1.6}
+.cm-reply-btn{font-size:11px;color:var(--blue-mid);background:none;border:none;cursor:pointer;padding:4px 0;font-family:'Noto Sans KR',sans-serif;font-weight:600}
+.cm-reply-btn:hover{text-decoration:underline}
+/* 대댓글 */
+.cm-replies{padding-left:1.2rem;border-left:2px solid var(--g100);margin-top:.6rem;display:flex;flex-direction:column;gap:0}
+.cm-reply{padding:.7rem 0;border-bottom:1px solid var(--g50)}
+.cm-reply:last-child{border-bottom:none}
+/* 댓글 입력 */
+.cm-form{background:var(--g50);border-radius:8px;padding:1.2rem;border:1px solid var(--g200)}
+.cm-form-title{font-size:12px;font-weight:700;color:var(--g700);letter-spacing:1px;text-transform:uppercase;margin-bottom:.8rem}
+.cm-input-row{display:grid;grid-template-columns:110px 1fr;gap:8px;margin-bottom:8px}
+.cm-input-row input{font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 12px;border:1px solid var(--g200);border-radius:4px;outline:none;background:#fff;transition:border-color .18s}
+.cm-input-row input:focus{border-color:var(--blue-mid)}
+.cm-text-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end}
+.cm-text-row textarea{font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 12px;border:1px solid var(--g200);border-radius:4px;outline:none;resize:none;height:70px;background:#fff;transition:border-color .18s;line-height:1.5}
+.cm-text-row textarea:focus{border-color:var(--blue-mid)}
+.cm-submit{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;padding:10px 18px;border-radius:4px;cursor:pointer;white-space:nowrap;align-self:flex-end}
+.cm-submit:hover{background:var(--blue)}
+/* 대댓글 입력폼 (인라인) */
+.reply-form{background:#f0f6ff;border-radius:6px;padding:.9rem 1rem;margin-top:.6rem;border:1px solid #d0e5fa;display:none}
+.reply-form.show{display:block}
+.reply-form-row{display:grid;grid-template-columns:100px 1fr auto;gap:6px;align-items:center}
+.reply-form-row input,.reply-form-row textarea{font-family:'Noto Sans KR',sans-serif;font-size:12px;padding:7px 10px;border:1px solid var(--g200);border-radius:4px;outline:none;background:#fff;transition:border-color .18s}
+.reply-form-row input:focus,.reply-form-row textarea:focus{border-color:var(--blue-mid)}
+.reply-submit{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;border-radius:4px;cursor:pointer;white-space:nowrap}
+
 .bi{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1rem 1.4rem;border-bottom:1px solid var(--g100);cursor:pointer;transition:background .15s}
 .bi:last-child{border-bottom:none}.bi:hover{background:var(--blue-light)}
 .bcat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;white-space:nowrap}
@@ -563,12 +602,6 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
         <div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div>
       </div>
 
-    <!-- 갤러리 -->
-    <div style="margin-top:70px">
-      <div class="bhead">
-        <div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div>
-      </div>
-
       <!-- 업로드 영역 -->
       <label class="upload-area" for="gal-file-input">
         <input type="file" id="gal-file-input" accept="image/*" multiple onchange="uploadImages(this.files)">
@@ -593,6 +626,37 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
 <div class="img-modal-ov" id="img-modal" onclick="this.classList.remove('show')">
   <button class="img-modal-close" onclick="document.getElementById('img-modal').classList.remove('show')">✕</button>
   <img id="img-modal-src" src="" alt="">
+</div>
+
+<!-- 게시글 + 댓글 모달 -->
+<div class="post-modal-ov" id="post-modal" onclick="if(event.target===this)closePostModal()">
+  <div class="post-modal">
+    <div class="pm-header">
+      <div style="flex:1">
+        <div class="pm-cat" id="pm-cat"></div>
+        <div class="pm-title" id="pm-title"></div>
+        <div class="pm-meta" id="pm-meta"></div>
+      </div>
+      <button class="pm-close" onclick="closePostModal()">✕</button>
+    </div>
+    <div class="pm-body">
+      <!-- 댓글 목록 -->
+      <div class="cm-list" id="cm-list">
+        <div style="text-align:center;padding:1.5rem;color:var(--g500);font-size:13px">댓글을 불러오는 중...</div>
+      </div>
+      <!-- 댓글 작성 -->
+      <div class="cm-form">
+        <div class="cm-form-title">댓글 작성</div>
+        <div class="cm-input-row">
+          <input type="text" id="cm-author" placeholder="이름 (익명 가능)">
+          <input type="text" id="cm-text-single" placeholder="댓글 내용을 입력하세요" onkeydown="if(event.key==='Enter')submitComment()">
+        </div>
+        <div style="text-align:right">
+          <button class="cm-submit" onclick="submitComment()">댓글 등록</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -817,7 +881,7 @@ function renderPosts(cat) {
     const d = new Date(p.created_at)
     const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
     const isNew = (now - d) < 86400000 * 3
-    return `<div class="bi">
+    return `<div class="bi" onclick="openPost('${p.id}')">
       <span class="bcat" style="background:${s.bg};color:${s.color}">${p.category}</span>
       <div>
         <div class="btitle">${p.is_pinned ? '📌 ' : ''}${p.title}${isNew ? ' <span class="nw">NEW</span>' : ''}</div>
@@ -854,7 +918,122 @@ document.querySelectorAll('.nb').forEach((btn, i) => {
 })
 loadPosts()
 
-// ── 갤러리 ──
+// ── 게시글 상세 + 댓글 ──
+let currentPostId = null
+
+async function openPost(postId) {
+  currentPostId = postId
+  const post = allPosts.find(p => p.id === postId)
+  if (!post) return
+
+  // 조회수 증가
+  db.from('posts').update({ views: (post.views || 0) + 1 }).eq('id', postId).then(() => {
+    post.views = (post.views || 0) + 1
+    renderPosts(currentCat)
+  })
+
+  // 모달 헤더 세팅
+  const s = CAT_STYLE[post.category] || { bg:'#eee', color:'#555' }
+  const d = new Date(post.created_at)
+  document.getElementById('pm-cat').textContent = post.category
+  document.getElementById('pm-cat').style.cssText = `background:${s.bg};color:${s.color}`
+  document.getElementById('pm-title').textContent = post.title
+  document.getElementById('pm-meta').textContent = `${post.author || '익명'} · ${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
+  document.getElementById('post-modal').classList.add('show')
+  document.body.style.overflow = 'hidden'
+
+  loadComments(postId)
+}
+
+function closePostModal() {
+  document.getElementById('post-modal').classList.remove('show')
+  document.body.style.overflow = ''
+  currentPostId = null
+}
+
+async function loadComments(postId) {
+  const cmList = document.getElementById('cm-list')
+  cmList.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--g500);font-size:13px">불러오는 중...</div>'
+
+  const { data } = await db.from('comments').select('*')
+    .eq('post_id', postId).order('created_at', { ascending: true })
+
+  const comments = data || []
+  const roots = comments.filter(c => !c.parent_id)
+  const replies = comments.filter(c => c.parent_id)
+
+  if (roots.length === 0) {
+    cmList.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--g500);font-size:13px;font-weight:300">첫 댓글을 남겨보세요 💬</div>'
+    return
+  }
+
+  cmList.innerHTML = roots.map(c => {
+    const d = new Date(c.created_at)
+    const dateStr = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    const childReplies = replies.filter(r => r.parent_id === c.id)
+    const repliesHtml = childReplies.length > 0 ? `
+      <div class="cm-replies">
+        ${childReplies.map(r => {
+          const rd = new Date(r.created_at)
+          const rdate = `${rd.getMonth()+1}/${rd.getDate()} ${String(rd.getHours()).padStart(2,'0')}:${String(rd.getMinutes()).padStart(2,'0')}`
+          return `<div class="cm-reply">
+            <div class="cm-top"><span class="cm-author">↳ ${r.author || '익명'}</span><span class="cm-date">${rdate}</span></div>
+            <div class="cm-text">${r.content}</div>
+          </div>`
+        }).join('')}
+      </div>` : ''
+
+    return `<div class="cm" id="cm-${c.id}">
+      <div class="cm-top">
+        <span class="cm-author">${c.author || '익명'}</span>
+        <span class="cm-date">${dateStr}</span>
+      </div>
+      <div class="cm-text">${c.content}</div>
+      <button class="cm-reply-btn" onclick="toggleReplyForm('${c.id}')">💬 답글</button>
+      ${repliesHtml}
+      <div class="reply-form" id="rf-${c.id}">
+        <div class="reply-form-row">
+          <input type="text" id="ra-${c.id}" placeholder="이름">
+          <input type="text" id="rt-${c.id}" placeholder="답글 내용" onkeydown="if(event.key==='Enter')submitReply('${c.id}')">
+          <button class="reply-submit" onclick="submitReply('${c.id}')">등록</button>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+}
+
+function toggleReplyForm(commentId) {
+  const rf = document.getElementById('rf-' + commentId)
+  rf.classList.toggle('show')
+  if (rf.classList.contains('show')) document.getElementById('ra-' + commentId).focus()
+}
+
+async function submitComment() {
+  if (!currentPostId) return
+  const author  = document.getElementById('cm-author').value.trim() || '익명'
+  const content = document.getElementById('cm-text-single').value.trim()
+  if (!content) { showToast('⚠️ 댓글 내용을 입력해주세요.'); return }
+
+  const { error } = await db.from('comments').insert({ post_id: currentPostId, author, content })
+  if (error) { showToast('❌ 오류: ' + error.message); return }
+  document.getElementById('cm-text-single').value = ''
+  showToast('✅ 댓글이 등록되었습니다!')
+  loadComments(currentPostId)
+}
+
+async function submitReply(parentId) {
+  if (!currentPostId) return
+  const author  = (document.getElementById('ra-' + parentId).value.trim()) || '익명'
+  const content = document.getElementById('rt-' + parentId).value.trim()
+  if (!content) { showToast('⚠️ 답글 내용을 입력해주세요.'); return }
+
+  const { error } = await db.from('comments').insert({ post_id: currentPostId, parent_id: parentId, author, content })
+  if (error) { showToast('❌ 오류: ' + error.message); return }
+  showToast('✅ 답글이 등록되었습니다!')
+  loadComments(currentPostId)
+}
+
+
 async function loadGallery() {
   const wrap = document.getElementById('gal-grid-wrap')
   if (!wrap) return
