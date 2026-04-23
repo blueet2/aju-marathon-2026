@@ -494,15 +494,22 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
 <div class="pg" id="pg-comm">
   <div class="comm-top"><div class="wrap" style="padding-top:0;padding-bottom:0"><div class="lbl" style="color:rgba(255,255,255,.4)">Community</div><div class="ttl" style="color:#fff">커뮤니티</div><div class="sub" style="color:rgba(255,255,255,.4)">함께 준비하고 응원하는 공간 · 질문, 후기, 정보를 나눠주세요</div></div></div>
   <div class="comm-sec">
-    <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Board</div><div class="ttl" style="font-size:22px">게시판</div></div><button class="wbtn">✏️ 글쓰기</button></div>
-    <div class="btabs"><button class="btab on">전체</button><button class="btab">공지</button><button class="btab">Q&amp;A</button><button class="btab">후기</button><button class="btab">같이달려요</button></div>
-    <div class="blist">
-      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">아주약품 제1회 걷기 및 달리기 대회 참가 신청 시작! <span class="nw">NEW</span></div><div class="bsub2">운영팀 · 조회 312</div></div><div class="bdate">2026.04.27</div></div>
-      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">대회 장소 및 코스 안내 (경기도 평택시 오성강변) <span class="nw">NEW</span></div><div class="bsub2">운영팀 · 조회 245</div></div><div class="bdate">2026.04.27</div></div>
-      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">번호표 배부 안내 : 5/13(수) 구내식당 12:00~13:30</div><div class="bsub2">운영팀 · 조회 198</div></div><div class="bdate">2026.04.27</div></div>
-      <div class="bi"><span class="bcat" style="background:#E8F4FD;color:#1565C0">Q&amp;A</span><div><div class="btitle">가족과 함께 걷기 코스 참가도 가능한가요? <span class="nw">NEW</span></div><div class="bsub2">익명 · 조회 38 · 댓글 2</div></div><div class="bdate">2026.04.28</div></div>
-
+    <div class="bhead">
+      <div><div class="lbl" style="margin-bottom:4px">Board</div><div class="ttl" style="font-size:22px">게시판</div></div>
     </div>
+    <div class="btabs">
+      <button class="btab on" onclick="filterPosts('전체',this)">전체</button>
+      <button class="btab" onclick="filterPosts('공지',this)">공지</button>
+      <button class="btab" onclick="filterPosts('Q&A',this)">Q&amp;A</button>
+      <button class="btab" onclick="filterPosts('후기',this)">후기</button>
+      <button class="btab" onclick="filterPosts('같이달려요',this)">같이달려요</button>
+    </div>
+    <div class="blist" id="board-list">
+      <div style="text-align:center;padding:3rem;color:var(--g500);font-size:14px;font-weight:300" id="board-loading">
+        <div style="font-size:24px;margin-bottom:.5rem">⏳</div>불러오는 중...
+      </div>
+    </div>
+
     <div style="margin-top:60px">
       <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div></div>
       <div style="background:var(--blue-light);border-radius:10px;padding:3rem;text-align:center;border:2px dashed var(--sky)">
@@ -693,6 +700,72 @@ function closeModal() {
 
 // 초기 로드
 loadCapacity()
+
+// ── 게시판 ──
+const CAT_STYLE = {
+  '공지':    { bg:'#E0EEFA', color:'#003F88' },
+  'Q&A':     { bg:'#E8F4FD', color:'#1565C0' },
+  '후기':    { bg:'#FFF3E0', color:'#E65100' },
+  '같이달려요': { bg:'#E8F5E9', color:'#2E7D32' },
+}
+
+let allPosts = []
+let currentCat = '전체'
+
+async function loadPosts() {
+  const { data, error } = await db
+    .from('posts')
+    .select('*')
+    .order('is_pinned', { ascending: false })
+    .order('created_at', { ascending: false })
+
+  if (error) { console.error(error); return }
+  allPosts = data || []
+  renderPosts(currentCat)
+}
+
+function filterPosts(cat, btn) {
+  currentCat = cat
+  document.querySelectorAll('.btab').forEach(b => b.classList.remove('on'))
+  btn.classList.add('on')
+  renderPosts(cat)
+}
+
+function renderPosts(cat) {
+  const list = document.getElementById('board-list')
+  const rows = cat === '전체' ? allPosts : allPosts.filter(p => p.category === cat)
+
+  if (rows.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--g500);font-size:14px;font-weight:300">
+      <div style="font-size:28px;margin-bottom:.5rem">📭</div>아직 게시물이 없습니다</div>`
+    return
+  }
+
+  const now = new Date()
+  list.innerHTML = rows.map(p => {
+    const s = CAT_STYLE[p.category] || { bg:'#eee', color:'#555' }
+    const d = new Date(p.created_at)
+    const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
+    const isNew = (now - d) < 86400000 * 3 // 3일 이내 NEW
+    const pinIcon = p.is_pinned ? '📌 ' : ''
+    return `<div class="bi">
+      <span class="bcat" style="background:${s.bg};color:${s.color}">${p.category}</span>
+      <div>
+        <div class="btitle">${pinIcon}${p.title}${isNew ? ' <span class="nw">NEW</span>' : ''}</div>
+        <div class="bsub2">${p.author} · 조회 ${p.views}</div>
+      </div>
+      <div class="bdate">${dateStr}</div>
+    </div>`
+  }).join('')
+}
+
+// 커뮤니티 탭 클릭 시 로드
+const origGoPage = goPage
+// 페이지 전환 시 게시판 자동 로드
+document.querySelectorAll('.nb').forEach((btn, i) => {
+  if (i === 4) btn.addEventListener('click', loadPosts)
+})
+loadPosts()
 </script>
 </body>
 </html>
