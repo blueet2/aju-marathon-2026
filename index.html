@@ -187,7 +187,32 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
 /* 토스트 */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--g800);color:#fff;font-size:13px;padding:12px 24px;border-radius:6px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
-@media(max-width:700px){.hd{padding:0 1rem}.nb{font-size:11px;padding:5px 9px}.frow,.ccards{grid-template-columns:1fr}.cstats{grid-template-columns:repeat(2,1fr)}.hero-deco{font-size:180px}}
+@media(max-width:700px){
+  .hd{padding:6px .8rem;height:auto;min-height:52px;flex-wrap:wrap;gap:4px}
+  .logo-txt{display:none}
+  .logo-div{display:none}
+  .logo img{height:22px}
+  nav{width:100%;display:flex;justify-content:space-between}
+  .nb{font-size:11px;padding:5px 6px;flex:1;text-align:center}
+  .pg{padding-top:92px}
+  .hero{min-height:calc(100vh - 92px)}
+  .hcont{padding:0 1.2rem}
+  .htitle{font-size:clamp(36px,13vw,68px);line-height:1.08}
+  .dday{top:auto;bottom:10%;right:5%;padding:10px 14px}
+  .dday-n{font-size:28px}
+  .hsub{font-size:13px;max-width:100%}
+  .hstats{gap:1rem}
+  .hs-n{font-size:26px}
+  .hero-deco{display:none}
+  .frow,.ccards{grid-template-columns:1fr}
+  .cstats{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:50px 1.2rem}
+  .igrid{grid-template-columns:1fr}
+  .ctabs{padding:0 1rem}
+  .ctab{font-size:13px;padding:.8rem 1rem}
+  .ccont{padding:40px 1.2rem}
+  .fi{flex-direction:column;gap:1.5rem}
+}
 </style>
 </head>
 <body>
@@ -476,8 +501,7 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
       <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">대회 장소 및 코스 안내 (경기도 평택시 오성강변) <span class="nw">NEW</span></div><div class="bsub2">운영팀 · 조회 245</div></div><div class="bdate">2026.04.27</div></div>
       <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">번호표 배부 안내 : 5/13(수) 구내식당 12:00~13:30</div><div class="bsub2">운영팀 · 조회 198</div></div><div class="bdate">2026.04.27</div></div>
       <div class="bi"><span class="bcat" style="background:#E8F4FD;color:#1565C0">Q&amp;A</span><div><div class="btitle">가족과 함께 걷기 코스 참가도 가능한가요? <span class="nw">NEW</span></div><div class="bsub2">익명 · 조회 38 · 댓글 2</div></div><div class="bdate">2026.04.28</div></div>
-      <div class="bi"><span class="bcat" style="background:#E8F5E9;color:#2E7D32">같이달려요</span><div><div class="btitle">5km 달리기 같이 연습하실 분! 주말 아침 <span class="nw">NEW</span></div><div class="bsub2">연구개발팀 이** · 조회 44 · 댓글 5</div></div><div class="bdate">2026.04.28</div></div>
-      <div class="bi"><span class="bcat" style="background:#E8F5E9;color:#2E7D32">같이달려요</span><div><div class="btitle">평택 오성강변 주차 정보 아시는 분 계세요?</div><div class="bsub2">영업팀 박** · 조회 33 · 댓글 3</div></div><div class="bdate">2026.04.27</div></div>
+
     </div>
     <div style="margin-top:60px">
       <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div></div>
