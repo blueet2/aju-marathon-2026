@@ -22,8 +22,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:#111;line
 .login-btn:hover{background:var(--blue)}
 .login-err{font-size:12px;color:#C8102E;margin-top:8px;display:none}
 
-/* MAIN LAYOUT */
-#app{display:none}
+/* 로딩 */
+.loading{text-align:center;padding:3rem;color:var(--g500)}
+.spin{display:inline-block;width:24px;height:24px;border:2px solid var(--g200);border-top-color:var(--blue-mid);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
 header{background:var(--g800);padding:0 2rem;height:58px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--blue-mid)}
 .h-logo{display:flex;align-items:center;gap:10px}
 .h-logo img{height:24px;filter:brightness(0) invert(1)}
@@ -68,10 +70,38 @@ tr:hover td{background:var(--g50)}
 .refresh-btn:hover{border-color:var(--blue-mid);color:var(--blue-mid)}
 .last-updated{font-size:11px;color:var(--g500);font-weight:300}
 
-/* 로딩 */
-.loading{text-align:center;padding:3rem;color:var(--g500)}
-.spin{display:inline-block;width:24px;height:24px;border:2px solid var(--g200);border-top-color:var(--blue-mid);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:.5rem}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* 탭 */
+.admin-tabs{display:flex;gap:0;border-bottom:2px solid var(--g200);margin-bottom:1.5rem}
+.atab{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;color:var(--g500);background:transparent;border:none;padding:.9rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s}
+.atab.on{color:var(--blue-mid);border-bottom-color:var(--blue-mid)}
+.atab:hover{color:var(--g700)}
+.admin-section{display:none}.admin-section.on{display:block}
+
+/* 게시판 관리 */
+.post-form{background:#fff;border-radius:8px;border:1px solid var(--g200);padding:1.5rem;margin-bottom:1.5rem}
+.post-form h3{font-size:14px;font-weight:700;margin-bottom:1rem;color:var(--g700)}
+.pf-row{display:grid;grid-template-columns:160px 1fr auto;gap:10px;align-items:start}
+.pf-row select,.pf-row input,.pf-row textarea{font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:9px 12px;border:1px solid var(--g200);border-radius:4px;outline:none;width:100%;transition:border-color .18s}
+.pf-row select:focus,.pf-row input:focus{border-color:var(--blue-mid)}
+.pf-row input[type=text]{flex:1}
+.pf-author{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pf-author input{font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:9px 12px;border:1px solid var(--g200);border-radius:4px;outline:none;transition:border-color .18s}
+.pf-author input:focus{border-color:var(--blue-mid)}
+.post-submit{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;padding:9px 20px;border-radius:4px;cursor:pointer;white-space:nowrap;align-self:flex-start;margin-top:0}
+.post-submit:hover{background:var(--blue)}
+.pin-chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--g700);margin-top:10px}
+.pin-chk input{accent-color:var(--blue-mid);width:auto}
+.post-list{background:#fff;border-radius:8px;border:1px solid var(--g200);overflow:hidden}
+.pi{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:.9rem 1.2rem;border-bottom:1px solid var(--g100)}
+.pi:last-child{border-bottom:none}
+.pi-cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;white-space:nowrap}
+.pi-title{font-size:13px;font-weight:500;color:#111}
+.pi-meta{font-size:11px;color:var(--g500)}
+.pi-date{font-size:11px;color:var(--g500);white-space:nowrap}
+.del-btn{font-size:11px;color:#C8102E;background:transparent;border:1px solid #fcc;border-radius:3px;padding:3px 8px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s;white-space:nowrap}
+.del-btn:hover{background:#C8102E;color:#fff;border-color:#C8102E}
+.no-post{text-align:center;padding:2.5rem;color:var(--g500);font-size:13px;font-weight:300}
+
 </style>
 </head>
 <body>
@@ -103,48 +133,69 @@ tr:hover td{background:var(--g50)}
   </header>
 
   <div class="main">
-    <!-- 통계 -->
-    <div class="stat-grid" id="stats">
-      <div class="stat"><div class="stat-n" id="s-total">-</div><div class="stat-l">총 신청자</div></div>
-      <div class="stat"><div class="stat-n" id="s-remain" style="color:#C8102E">-</div><div class="stat-l">잔여 인원 (30명 중)</div></div>
-      <div class="stat"><div class="stat-n" id="s-5km" style="color:var(--blue-mid)">-</div><div class="stat-l">도전코스 (5km)</div></div>
-      <div class="stat"><div class="stat-n" id="s-3km" style="color:#2E7D32">-</div><div class="stat-l">패밀리코스 (3km)</div></div>
-      <div class="stat"><div class="stat-n" id="s-family">-</div><div class="stat-l">가족 동반</div></div>
+    <!-- 탭 -->
+    <div class="admin-tabs">
+      <button class="atab on" onclick="switchTab('reg',this)">📋 참가신청 현황</button>
+      <button class="atab" onclick="switchTab('board',this)">📌 게시판 관리</button>
     </div>
 
-    <!-- 필터 & 액션 -->
-    <div class="toolbar">
-      <div class="toolbar-left">
-        <button class="filt on" onclick="filter('all',this)">전체</button>
-        <button class="filt" onclick="filter('5km',this)">🏃 5km 달리기</button>
-        <button class="filt" onclick="filter('3km',this)">🚶 3km 걷기</button>
-        <button class="filt" onclick="filter('family',this)">👨‍👩‍👧 가족 동반</button>
+    <!-- 참가신청 섹션 -->
+    <div class="admin-section on" id="sec-reg">
+      <!-- 통계 -->
+      <div class="stat-grid" id="stats">
+        <div class="stat"><div class="stat-n" id="s-total">-</div><div class="stat-l">총 신청자</div></div>
+        <div class="stat"><div class="stat-n" id="s-remain" style="color:#C8102E">-</div><div class="stat-l">잔여 인원 (30명 중)</div></div>
+        <div class="stat"><div class="stat-n" id="s-5km" style="color:var(--blue-mid)">-</div><div class="stat-l">도전코스 (5km)</div></div>
+        <div class="stat"><div class="stat-n" id="s-3km" style="color:#2E7D32">-</div><div class="stat-l">패밀리코스 (3km)</div></div>
+        <div class="stat"><div class="stat-n" id="s-family">-</div><div class="stat-l">가족 동반</div></div>
       </div>
-      <button class="csv-btn" onclick="exportCSV()">⬇ CSV 다운로드</button>
+      <!-- 필터 & 액션 -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="filt on" onclick="filter('all',this)">전체</button>
+          <button class="filt" onclick="filter('5km',this)">🏃 5km 달리기</button>
+          <button class="filt" onclick="filter('3km',this)">🚶 3km 걷기</button>
+          <button class="filt" onclick="filter('family',this)">👨‍👩‍👧 가족 동반</button>
+        </div>
+        <button class="csv-btn" onclick="exportCSV()">⬇ CSV 다운로드</button>
+      </div>
+      <!-- 테이블 -->
+      <div class="table-wrap">
+        <div class="loading" id="loading"><div class="spin"></div><br>불러오는 중...</div>
+        <table id="reg-table" style="display:none">
+          <thead><tr><th>#</th><th>이름</th><th>사원번호</th><th>부서</th><th>연락처</th><th>이메일</th><th>종목</th><th>성별</th><th>가족동반</th><th>건강특이사항</th><th>신청일시</th></tr></thead>
+          <tbody id="reg-body"></tbody>
+        </table>
+        <div class="no-data" id="no-data" style="display:none">신청 데이터가 없습니다</div>
+      </div>
     </div>
 
-    <!-- 테이블 -->
-    <div class="table-wrap">
-      <div class="loading" id="loading"><div class="spin"></div><br>불러오는 중...</div>
-      <table id="reg-table" style="display:none">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>이름</th>
-            <th>사원번호</th>
-            <th>부서</th>
-            <th>연락처</th>
-            <th>이메일</th>
-            <th>종목</th>
-            <th>성별</th>
-            <th>가족동반</th>
-            <th>건강특이사항</th>
-            <th>신청일시</th>
-          </tr>
-        </thead>
-        <tbody id="reg-body"></tbody>
-      </table>
-      <div class="no-data" id="no-data" style="display:none">신청 데이터가 없습니다</div>
+    <!-- 게시판 관리 섹션 -->
+    <div class="admin-section" id="sec-board">
+      <!-- 글쓰기 폼 -->
+      <div class="post-form">
+        <h3>✏️ 새 게시물 작성</h3>
+        <div class="pf-row">
+          <select id="p-cat">
+            <option value="공지">📢 공지</option>
+            <option value="Q&A">Q&A</option>
+            <option value="후기">후기</option>
+            <option value="같이달려요">같이달려요</option>
+          </select>
+          <input type="text" id="p-title" placeholder="제목을 입력하세요">
+          <button class="post-submit" onclick="addPost()">등록</button>
+        </div>
+        <div class="pf-author">
+          <input type="text" id="p-author" placeholder="작성자 (기본: 운영팀)" value="운영팀">
+          <input type="text" id="p-content" placeholder="내용 (선택)">
+        </div>
+        <label class="pin-chk"><input type="checkbox" id="p-pin"> 📌 상단 고정</label>
+      </div>
+
+      <!-- 게시물 목록 -->
+      <div class="post-list" id="post-list">
+        <div class="no-post" id="post-loading">불러오는 중...</div>
+      </div>
     </div>
   </div>
 </div>
@@ -296,6 +347,87 @@ function exportCSV() {
 setInterval(() => {
   if (document.getElementById('app').style.display !== 'none') loadData()
 }, 30000)
+
+// ── 탭 전환 ──
+function switchTab(tab, btn) {
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('on'))
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('on'))
+  btn.classList.add('on')
+  document.getElementById('sec-' + tab).classList.add('on')
+  if (tab === 'board') loadPosts()
+}
+
+// ── 게시판 관리 ──
+const CAT_STYLE = {
+  '공지':    { bg:'#E0EEFA', color:'#003F88' },
+  'Q&A':     { bg:'#E8F4FD', color:'#1565C0' },
+  '후기':    { bg:'#FFF3E0', color:'#E65100' },
+  '같이달려요': { bg:'#E8F5E9', color:'#2E7D32' },
+}
+
+let allPosts = []
+
+async function loadPosts() {
+  document.getElementById('post-list').innerHTML = '<div class="no-post">불러오는 중...</div>'
+  const { data } = await db.from('posts').select('*').order('is_pinned', { ascending:false }).order('created_at', { ascending:false })
+  allPosts = data || []
+  renderPosts()
+}
+
+function renderPosts() {
+  const list = document.getElementById('post-list')
+  if (allPosts.length === 0) {
+    list.innerHTML = '<div class="no-post">📭 게시물이 없습니다. 위에서 첫 공지를 작성해보세요!</div>'
+    return
+  }
+  list.innerHTML = allPosts.map(p => {
+    const s = CAT_STYLE[p.category] || { bg:'#eee', color:'#555' }
+    const d = new Date(p.created_at)
+    const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
+    return `<div class="pi">
+      <span class="pi-cat" style="background:${s.bg};color:${s.color}">${p.category}</span>
+      <div>
+        <div class="pi-title">${p.is_pinned ? '📌 ' : ''}${p.title}</div>
+        <div class="pi-meta">${p.author} · 조회 ${p.views}</div>
+      </div>
+      <div class="pi-date">${dateStr}</div>
+      <button class="del-btn" onclick="deletePost('${p.id}')">삭제</button>
+    </div>`
+  }).join('')
+}
+
+async function addPost() {
+  const cat    = document.getElementById('p-cat').value
+  const title  = document.getElementById('p-title').value.trim()
+  const author = document.getElementById('p-author').value.trim() || '운영팀'
+  const content= document.getElementById('p-content').value.trim()
+  const pinned = document.getElementById('p-pin').checked
+
+  if (!title) { alert('제목을 입력해주세요.'); return }
+
+  const btn = document.querySelector('.post-submit')
+  btn.disabled = true; btn.textContent = '등록 중...'
+
+  const { error } = await db.from('posts').insert({
+    category: cat, title, author, content: content || null, is_pinned: pinned
+  })
+
+  if (error) { alert('오류: ' + error.message) }
+  else {
+    document.getElementById('p-title').value = ''
+    document.getElementById('p-content').value = ''
+    document.getElementById('p-pin').checked = false
+    loadPosts()
+  }
+  btn.disabled = false; btn.textContent = '등록'
+}
+
+async function deletePost(id) {
+  if (!confirm('이 게시물을 삭제하시겠습니까?')) return
+  const { error } = await db.from('posts').delete().eq('id', id)
+  if (error) alert('오류: ' + error.message)
+  else loadPosts()
+}
 </script>
 </body>
 </html>
