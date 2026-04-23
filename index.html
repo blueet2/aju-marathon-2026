@@ -158,6 +158,35 @@ nav{display:flex;gap:2px}
 .btab{font-size:13px;font-weight:600;padding:7px 16px;border-radius:20px;border:1px solid var(--g200);cursor:pointer;background:var(--white);color:var(--g500);transition:all .15s}
 .btab.on{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
 .blist{display:flex;flex-direction:column;border:1px solid var(--g200);border-radius:8px;overflow:hidden}
+/* 글쓰기 폼 */
+.write-form{background:var(--g50);border:1px solid var(--g200);border-radius:8px;padding:1.4rem 1.6rem;margin-bottom:1.2rem}
+.write-form-row{display:grid;grid-template-columns:130px 1fr 110px auto;gap:8px;align-items:center}
+.write-form input,.write-form select{font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:9px 12px;border:1px solid var(--g200);border-radius:4px;outline:none;background:#fff;transition:border-color .18s;width:100%}
+.write-form input:focus,.write-form select:focus{border-color:var(--blue-mid)}
+.write-submit{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;padding:9px 18px;border-radius:4px;cursor:pointer;white-space:nowrap;transition:background .18s}
+.write-submit:hover{background:var(--blue)}
+/* 갤러리 */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:1.5rem}
+.gal-item{aspect-ratio:1;border-radius:8px;overflow:hidden;position:relative;cursor:pointer;background:var(--g100)}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .25s}
+.gal-item:hover img{transform:scale(1.06)}
+.gal-item-ov{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:flex-end;padding:10px}
+.gal-item:hover .gal-item-ov{background:rgba(0,63,136,.4)}
+.gal-item-lbl{color:#fff;font-size:12px;font-weight:600;opacity:0;transition:opacity .2s}
+.gal-item:hover .gal-item-lbl{opacity:1}
+.upload-area{border:2px dashed var(--sky);border-radius:10px;padding:2.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--blue-light);margin-bottom:1rem}
+.upload-area:hover{border-color:var(--blue-mid);background:#e0eefa}
+.upload-area input[type=file]{display:none}
+.upload-label{font-size:15px;font-weight:600;color:var(--blue);margin-bottom:6px}
+.upload-sub{font-size:13px;color:var(--g500);font-weight:300}
+.upload-progress{margin-top:1rem;display:none}
+.upload-bar{width:100%;height:6px;background:var(--g200);border-radius:3px;overflow:hidden}
+.upload-bar-fill{height:100%;background:var(--blue-mid);border-radius:3px;width:0%;transition:width .3s}
+/* 이미지 모달 */
+.img-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center}
+.img-modal-ov.show{display:flex}
+.img-modal-ov img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain}
+.img-modal-close{position:absolute;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;line-height:1}
 .bi{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1rem 1.4rem;border-bottom:1px solid var(--g100);cursor:pointer;transition:background .15s}
 .bi:last-child{border-bottom:none}.bi:hover{background:var(--blue-light)}
 .bcat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;white-space:nowrap}
@@ -492,11 +521,29 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
 
 <!-- PAGE 5 커뮤니티 -->
 <div class="pg" id="pg-comm">
-  <div class="comm-top"><div class="wrap" style="padding-top:0;padding-bottom:0"><div class="lbl" style="color:rgba(255,255,255,.4)">Community</div><div class="ttl" style="color:#fff">커뮤니티</div><div class="sub" style="color:rgba(255,255,255,.4)">함께 준비하고 응원하는 공간 · 질문, 후기, 정보를 나눠주세요</div></div></div>
+  <div class="comm-top"><div class="wrap" style="padding-top:0;padding-bottom:0"><div class="lbl" style="color:rgba(255,255,255,.4)">Community</div><div class="ttl" style="color:#fff">커뮤니티</div><div class="sub" style="color:rgba(255,255,255,.4)">함께 준비하고 응원하는 공간 · 누구나 자유롭게 올려주세요!</div></div></div>
   <div class="comm-sec">
+
+    <!-- 게시판 -->
     <div class="bhead">
       <div><div class="lbl" style="margin-bottom:4px">Board</div><div class="ttl" style="font-size:22px">게시판</div></div>
     </div>
+
+    <!-- 글쓰기 폼 -->
+    <div class="write-form">
+      <div class="write-form-row">
+        <select id="w-cat">
+          <option value="공지">📢 공지</option>
+          <option value="Q&A" selected>Q&amp;A</option>
+          <option value="후기">후기</option>
+          <option value="같이달려요">같이달려요</option>
+        </select>
+        <input type="text" id="w-title" placeholder="제목을 입력하세요">
+        <input type="text" id="w-author" placeholder="이름 (익명 가능)">
+        <button class="write-submit" onclick="submitPost()">✏️ 등록</button>
+      </div>
+    </div>
+
     <div class="btabs">
       <button class="btab on" onclick="filterPosts('전체',this)">전체</button>
       <button class="btab" onclick="filterPosts('공지',this)">공지</button>
@@ -510,15 +557,36 @@ footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
       </div>
     </div>
 
-    <div style="margin-top:60px">
-      <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div></div>
-      <div style="background:var(--blue-light);border-radius:10px;padding:3rem;text-align:center;border:2px dashed var(--sky)">
-        <div style="font-size:48px;margin-bottom:1rem">📷</div>
-        <div style="font-size:16px;font-weight:700;color:var(--blue);margin-bottom:8px">제1회 대회 사진이 이곳을 채울 예정입니다</div>
-        <div style="font-size:14px;color:var(--g500);font-weight:300">5월 16일 오성강변에서의 특별한 순간들을 담아드릴게요 📸</div>
+    <!-- 갤러리 -->
+    <div style="margin-top:70px">
+      <div class="bhead">
+        <div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div>
+      </div>
+
+      <!-- 업로드 영역 -->
+      <label class="upload-area" for="gal-file-input">
+        <input type="file" id="gal-file-input" accept="image/*" multiple onchange="uploadImages(this.files)">
+        <div style="font-size:36px;margin-bottom:.8rem">📷</div>
+        <div class="upload-label">클릭하여 사진 업로드</div>
+        <div class="upload-sub">JPG, PNG, GIF · 최대 10MB · 여러 장 동시 업로드 가능</div>
+      </label>
+      <div class="upload-progress" id="upload-progress">
+        <div style="font-size:13px;color:var(--blue-mid);margin-bottom:6px;font-weight:600" id="upload-status">업로드 중...</div>
+        <div class="upload-bar"><div class="upload-bar-fill" id="upload-bar-fill"></div></div>
+      </div>
+
+      <!-- 사진 그리드 -->
+      <div class="gal-grid" id="gal-grid">
+        <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px;font-weight:300" id="gal-loading">사진을 불러오는 중...</div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- 이미지 풀스크린 모달 -->
+<div class="img-modal-ov" id="img-modal" onclick="this.classList.remove('show')">
+  <button class="img-modal-close" onclick="document.getElementById('img-modal').classList.remove('show')">✕</button>
+  <img id="img-modal-src" src="" alt="">
 </div>
 
 <footer>
@@ -703,9 +771,9 @@ loadCapacity()
 
 // ── 게시판 ──
 const CAT_STYLE = {
-  '공지':    { bg:'#E0EEFA', color:'#003F88' },
-  'Q&A':     { bg:'#E8F4FD', color:'#1565C0' },
-  '후기':    { bg:'#FFF3E0', color:'#E65100' },
+  '공지':      { bg:'#E0EEFA', color:'#003F88' },
+  'Q&A':       { bg:'#E8F4FD', color:'#1565C0' },
+  '후기':      { bg:'#FFF3E0', color:'#E65100' },
   '같이달려요': { bg:'#E8F5E9', color:'#2E7D32' },
 }
 
@@ -714,11 +782,9 @@ let currentCat = '전체'
 
 async function loadPosts() {
   const { data, error } = await db
-    .from('posts')
-    .select('*')
+    .from('posts').select('*')
     .order('is_pinned', { ascending: false })
     .order('created_at', { ascending: false })
-
   if (error) { console.error(error); return }
   allPosts = data || []
   renderPosts(currentCat)
@@ -734,38 +800,114 @@ function filterPosts(cat, btn) {
 function renderPosts(cat) {
   const list = document.getElementById('board-list')
   const rows = cat === '전체' ? allPosts : allPosts.filter(p => p.category === cat)
-
+  const now = new Date()
   if (rows.length === 0) {
     list.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--g500);font-size:14px;font-weight:300">
-      <div style="font-size:28px;margin-bottom:.5rem">📭</div>아직 게시물이 없습니다</div>`
+      <div style="font-size:28px;margin-bottom:.5rem">📭</div>아직 게시물이 없습니다. 첫 글을 남겨보세요!</div>`
     return
   }
-
-  const now = new Date()
   list.innerHTML = rows.map(p => {
     const s = CAT_STYLE[p.category] || { bg:'#eee', color:'#555' }
     const d = new Date(p.created_at)
     const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`
-    const isNew = (now - d) < 86400000 * 3 // 3일 이내 NEW
-    const pinIcon = p.is_pinned ? '📌 ' : ''
+    const isNew = (now - d) < 86400000 * 3
     return `<div class="bi">
       <span class="bcat" style="background:${s.bg};color:${s.color}">${p.category}</span>
       <div>
-        <div class="btitle">${pinIcon}${p.title}${isNew ? ' <span class="nw">NEW</span>' : ''}</div>
-        <div class="bsub2">${p.author} · 조회 ${p.views}</div>
+        <div class="btitle">${p.is_pinned ? '📌 ' : ''}${p.title}${isNew ? ' <span class="nw">NEW</span>' : ''}</div>
+        <div class="bsub2">${p.author || '익명'} · 조회 ${p.views}</div>
       </div>
       <div class="bdate">${dateStr}</div>
     </div>`
   }).join('')
 }
 
+async function submitPost() {
+  const cat    = document.getElementById('w-cat').value
+  const title  = document.getElementById('w-title').value.trim()
+  const author = document.getElementById('w-author').value.trim() || '익명'
+  if (!title) { showToast('⚠️ 제목을 입력해주세요.'); return }
+
+  const btn = document.querySelector('.write-submit')
+  btn.disabled = true; btn.textContent = '등록 중...'
+
+  const { error } = await db.from('posts').insert({ category: cat, title, author })
+  if (error) { showToast('❌ 오류: ' + error.message) }
+  else {
+    document.getElementById('w-title').value = ''
+    document.getElementById('w-author').value = ''
+    showToast('✅ 게시물이 등록되었습니다!')
+    loadPosts()
+  }
+  btn.disabled = false; btn.textContent = '✏️ 등록'
+}
+
 // 커뮤니티 탭 클릭 시 로드
-const origGoPage = goPage
-// 페이지 전환 시 게시판 자동 로드
 document.querySelectorAll('.nb').forEach((btn, i) => {
-  if (i === 4) btn.addEventListener('click', loadPosts)
+  if (i === 4) btn.addEventListener('click', () => { loadPosts(); loadGallery() })
 })
 loadPosts()
+
+// ── 갤러리 ──
+async function loadGallery() {
+  const grid = document.getElementById('gal-grid')
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px">불러오는 중...</div>'
+
+  const { data, error } = await db.storage.from('gallery').list('', {
+    limit: 100, sortBy: { column: 'created_at', order: 'desc' }
+  })
+
+  if (error || !data || data.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--g500);font-size:13px;font-weight:300">
+      📷 아직 업로드된 사진이 없습니다<br>대회 당일 사진을 올려주세요!</div>`
+    return
+  }
+
+  grid.innerHTML = data
+    .filter(f => f.name && f.name !== '.emptyFolderPlaceholder')
+    .map(f => {
+      const url = db.storage.from('gallery').getPublicUrl(f.name).data.publicUrl
+      const name = f.name.replace(/^\d+_/, '').replace(/\.[^.]+$/, '')
+      return `<div class="gal-item" onclick="openImg('${url}')">
+        <img src="${url}" alt="${name}" loading="lazy">
+        <div class="gal-item-ov"><span class="gal-item-lbl">${name}</span></div>
+      </div>`
+    }).join('')
+}
+
+async function uploadImages(files) {
+  if (!files || files.length === 0) return
+  const progress = document.getElementById('upload-progress')
+  const bar = document.getElementById('upload-bar-fill')
+  const status = document.getElementById('upload-status')
+  progress.style.display = 'block'
+
+  let done = 0
+  for (const file of files) {
+    if (file.size > 10 * 1024 * 1024) { showToast(`⚠️ ${file.name} 은 10MB를 초과합니다`); continue }
+    const ext = file.name.split('.').pop()
+    const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    status.textContent = `업로드 중... (${done + 1}/${files.length})`
+
+    const { error } = await db.storage.from('gallery').upload(path, file, { contentType: file.type })
+    if (error) { showToast('❌ 업로드 실패: ' + file.name); continue }
+    done++
+    bar.style.width = (done / files.length * 100) + '%'
+  }
+
+  status.textContent = `✅ ${done}장 업로드 완료!`
+  setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0%' }, 2500)
+  document.getElementById('gal-file-input').value = ''
+  loadGallery()
+}
+
+function openImg(url) {
+  document.getElementById('img-modal-src').src = url
+  document.getElementById('img-modal').classList.add('show')
+}
+
+loadGallery()
+</script>
 </script>
 </body>
 </html>
