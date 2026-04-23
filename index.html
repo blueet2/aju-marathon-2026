@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아주약품 제1회 걷기 및 달리기 대회 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#003F88;--blue-dark:#002A5E;--blue-mid:#0072CE;--sky:#4BA3E3;
+  --blue-light:#EFF6FD;--black:#0D0D0D;--white:#FFFFFF;
+  --g50:#F7F7F5;--g100:#EFEFEB;--g200:#E0E0D8;--g500:#8A8A80;--g700:#3A3A36;--g800:#12203A;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--white);color:var(--black);line-height:1.7;overflow-x:hidden}
+header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(0,42,94,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(75,163,227,0.2)}
+.hd{max-width:1280px;margin:0 auto;padding:0 2rem;height:62px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo img{height:28px;filter:brightness(0) invert(1)}
+.logo-div{width:1px;height:20px;background:rgba(255,255,255,0.2)}
+.logo-txt{font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);line-height:1.4}
+.logo-txt em{color:var(--sky);font-style:normal}
+nav{display:flex;gap:2px}
+.nb{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);background:transparent;border:none;cursor:pointer;padding:7px 13px;border-radius:3px;transition:all .18s;white-space:nowrap}
+.nb:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nb.on{color:#fff;background:var(--blue-mid)}
+.pg{display:none;padding-top:62px;min-height:100vh}.pg.on{display:block}
+.wrap{max-width:1280px;margin:0 auto;padding:80px 2.5rem}
+.lbl{font-size:11px;font-weight:700;color:var(--blue-mid);letter-spacing:4px;text-transform:uppercase;margin-bottom:.5rem}
+.ttl{font-size:clamp(24px,2.8vw,34px);font-weight:700;color:var(--black);margin-bottom:.6rem;line-height:1.2}
+.sub{font-size:15px;color:var(--g500);font-weight:300}
+/* HERO */
+.hero{height:calc(100vh - 62px);min-height:560px;background:var(--blue-dark);display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 75% 50%,rgba(0,114,206,.28) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 15% 75%,rgba(75,163,227,.1) 0%,transparent 60%),repeating-linear-gradient(90deg,rgba(255,255,255,.013) 0px,rgba(255,255,255,.013) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(0deg,rgba(255,255,255,.013) 0px,rgba(255,255,255,.013) 1px,transparent 1px,transparent 80px)}
+.hero-deco{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:300px;color:rgba(0,114,206,.1);line-height:1;pointer-events:none}
+.dday{position:absolute;top:90px;right:4%;background:rgba(0,114,206,.15);border:1px solid rgba(75,163,227,.25);border-radius:8px;padding:14px 20px;text-align:center;backdrop-filter:blur(4px)}
+.dday-n{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--sky);line-height:1;letter-spacing:2px}
+.dday-l{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.5px;font-weight:300}
+.hcont{max-width:1280px;margin:0 auto;padding:0 2.5rem;position:relative;z-index:1}
+.heyebrow{font-size:11px;font-weight:700;color:var(--sky);letter-spacing:4px;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:10px}
+.heyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--sky)}
+.htitle{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,8vw,108px);line-height:.92;color:#fff;letter-spacing:2px;margin-bottom:1.4rem}
+.htitle span{color:var(--sky)}
+.hsub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:2.2rem;font-weight:300;max-width:480px;line-height:1.9}
+.hstats{display:flex;gap:2rem;margin-bottom:2.2rem;flex-wrap:wrap}
+.hs{border-left:2px solid var(--sky);padding-left:14px}
+.hs-n{font-family:'Bebas Neue',sans-serif;font-size:34px;color:#fff;line-height:1;letter-spacing:1px}
+.hs-l{font-size:11px;color:rgba(255,255,255,.4);font-weight:300;letter-spacing:.5px;margin-top:2px}
+.hcta{display:flex;gap:12px;flex-wrap:wrap}
+.btnp{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;padding:13px 30px;border-radius:3px;cursor:pointer;transition:all .18s}
+.btnp:hover{background:var(--blue)}
+.btno{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.22);font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;padding:13px 26px;border-radius:3px;cursor:pointer;transition:all .18s}
+.btno:hover{border-color:rgba(255,255,255,.5)}
+/* 안내 그리드 */
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--g200);border:1px solid var(--g200);margin-top:3rem;border-radius:10px;overflow:hidden}
+.ic{background:var(--white);padding:1.8rem 2rem;display:flex;flex-direction:column;gap:.4rem;transition:background .15s}
+.ic:hover{background:var(--blue-light)}
+.ic-i{font-size:22px;margin-bottom:.4rem}
+.ic-lbl{font-size:10px;font-weight:700;color:var(--g500);letter-spacing:2px;text-transform:uppercase}
+.ic-val{font-size:16px;font-weight:700;color:var(--black);line-height:1.4}
+.ic-dt{font-size:13px;color:var(--g500);font-weight:300;line-height:1.6;margin-top:2px}
+/* 타임라인 */
+.tl{margin-top:3rem;display:flex;flex-direction:column}
+.tlr{display:grid;grid-template-columns:170px 1fr;position:relative}
+.tlr::before{content:'';position:absolute;left:169px;top:30px;bottom:-1px;width:1px;background:var(--g200)}
+.tlr:last-child::before{display:none}
+.tl-dt{padding:1.4rem 1.8rem 1.4rem 0;font-size:13px;font-weight:700;color:var(--g500);text-align:right;line-height:1.5}
+.tl-dot{position:absolute;left:163px;top:22px;width:14px;height:14px;background:var(--white);border:2px solid var(--g200);border-radius:50%;z-index:1}
+.tlr.hi .tl-dot{background:var(--blue-mid);border-color:var(--blue-mid);box-shadow:0 0 0 4px rgba(0,114,206,.15)}
+.tlr.hi .tl-dt{color:var(--blue-mid)}
+.tl-body{padding:1.4rem 0 1.4rem 2.2rem;border-bottom:1px solid var(--g100)}
+.tl-ttl{font-size:15px;font-weight:700;margin-bottom:4px;color:var(--black)}
+.tl-desc{font-size:13px;color:var(--g500);font-weight:300;line-height:1.6}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:7px;vertical-align:middle}
+.pr{background:#FEE5E9;color:#C8102E}
+/* FORM */
+.reg-top{background:var(--g800);padding:56px 0;border-bottom:3px solid var(--blue-mid)}
+/* 잔여 인원 배너 */
+.capacity-bar{background:var(--blue-light);border:1px solid rgba(0,114,206,.2);border-radius:6px;padding:.9rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.cap-left{font-size:13px;font-weight:600;color:var(--blue)}
+.cap-right{font-size:13px;color:var(--g500);font-weight:300}
+.cap-bar{width:100%;height:6px;background:var(--g200);border-radius:3px;margin-top:.5rem}
+.cap-fill{height:100%;background:var(--blue-mid);border-radius:3px;transition:width .5s}
+.cap-full{background:#C8102E}
+.fwrap{max-width:720px;margin:0 auto;padding:56px 2rem 80px}
+.fsec{background:var(--g50);border-radius:8px;padding:1.8rem 2rem;margin-bottom:1.4rem;border:1px solid var(--g200)}
+.fs-ttl{font-size:11px;font-weight:700;color:var(--g700);letter-spacing:2px;margin-bottom:1.4rem;padding-bottom:.9rem;border-bottom:1px solid var(--g200);text-transform:uppercase}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--g700);margin-bottom:5px}
+.req{color:var(--blue-mid);margin-left:2px}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:1px solid var(--g200);border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--black);background:var(--white);outline:none;transition:border-color .18s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue-mid);box-shadow:0 0 0 3px rgba(0,114,206,.1)}
+.field textarea{resize:vertical;min-height:80px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.ccards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.cc{border:2px solid var(--g200);border-radius:8px;padding:1.2rem 1.4rem;cursor:pointer;transition:all .18s;background:var(--white);display:block}
+.cc:has(input:checked){border-color:var(--blue-mid);background:#EFF6FD}
+.cc input{display:none}
+.cc-ey{font-size:10px;font-weight:700;color:var(--g500);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.cc-dist{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--blue-mid);line-height:1}
+.cc-name{font-size:15px;font-weight:700;color:var(--black);margin-top:4px}
+.cc-info{font-size:12px;color:var(--g500);margin-top:5px;font-weight:300;line-height:1.5}
+.cc-tag{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px}
+.agree-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.agree-row input[type=checkbox]{width:auto;margin-top:4px;accent-color:var(--blue-mid);flex-shrink:0}
+.agree-row span{font-size:13px;color:var(--g700);line-height:1.5}
+.agree-row a{color:var(--blue-mid);text-decoration:underline}
+.sub-btn{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:700;padding:15px;border-radius:4px;cursor:pointer;transition:background .18s;width:100%;margin-top:.5rem}
+.sub-btn:hover:not(:disabled){background:var(--blue)}
+.sub-btn:disabled{background:var(--g200);color:var(--g500);cursor:not-allowed}
+.sub-note{font-size:12px;color:var(--g500);margin-top:10px;text-align:center;font-weight:300;line-height:1.8}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A80' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+/* COURSE */
+.course-top{background:var(--blue-dark);padding:60px 0;position:relative;overflow:hidden}
+.course-top::after{content:'COURSE';font-family:'Bebas Neue',sans-serif;position:absolute;bottom:-20px;right:0;font-size:180px;color:rgba(255,255,255,.04);line-height:1;pointer-events:none}
+.ctabs-bar{border-bottom:1px solid var(--g200)}
+.ctabs{display:flex;max-width:1280px;margin:0 auto;padding:0 2.5rem}
+.ctab{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;color:var(--g500);background:transparent;border:none;padding:1rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s}
+.ctab.on{color:var(--blue-mid);border-bottom-color:var(--blue-mid)}
+.ccont{display:none;max-width:1280px;margin:0 auto;padding:60px 2.5rem}
+.ccont.on{display:block}
+.mapw{width:100%;border-radius:12px;overflow:hidden;margin-bottom:2.5rem;border:1px solid var(--g200);background:#1a2a3a;position:relative}
+.mapw svg{display:block;width:100%}
+.map-note{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:6px 12px;border-radius:4px}
+.cstats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--g200);border:1px solid var(--g200);border-radius:8px;overflow:hidden;margin-bottom:2.5rem}
+.cst{background:var(--white);padding:1.4rem 1rem;text-align:center}
+.cst-n{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--blue-mid);line-height:1}
+.cst-u{font-size:12px;color:var(--g500)}
+.cst-l{font-size:11px;color:var(--g500);margin-top:4px;font-weight:300}
+.cps-ttl{font-size:11px;font-weight:700;color:var(--g700);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
+.cps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cp{display:flex;gap:12px;align-items:flex-start;background:var(--g50);border-radius:6px;padding:1rem 1.2rem;border:1px solid var(--g100)}
+.cp-n{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--blue-mid);min-width:26px;line-height:1.2}
+.cp-name{font-size:13px;font-weight:600;color:var(--black)}
+.cp-s{font-size:12px;color:var(--g500);font-weight:300;margin-top:2px}
+.cpill{display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;margin-top:4px}
+/* GIFT */
+.gift-top{background:var(--blue);padding:60px 0}
+.gift-sec{max-width:1280px;margin:0 auto;padding:80px 2.5rem}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:3rem}
+.gcard{border:1px solid var(--g200);border-radius:10px;overflow:hidden;transition:all .22s;background:var(--white)}
+.gcard:hover{transform:translateY(-4px);border-color:var(--blue-mid);box-shadow:0 8px 28px rgba(0,114,206,.12)}
+.gcard.soon{opacity:.75}
+.gimg{height:170px;display:flex;align-items:center;justify-content:center;font-size:54px;position:relative}
+.gbadge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.gbody{padding:1.3rem 1.5rem 1.7rem}
+.gtag{font-size:10px;font-weight:700;color:var(--blue-mid);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.gname{font-size:17px;font-weight:700;color:var(--black);margin-bottom:6px}
+.gdesc{font-size:13px;color:var(--g500);font-weight:300;line-height:1.6}
+.gsoon-tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;background:var(--g100);color:var(--g500)}
+.gnote{margin-top:2.5rem;background:var(--blue-light);border-left:3px solid var(--blue-mid);padding:1.4rem 1.8rem;border-radius:0 6px 6px 0;font-size:14px;color:var(--g700);line-height:1.9}
+/* COMM */
+.comm-top{background:var(--g800);padding:60px 0}
+.comm-sec{max-width:1280px;margin:0 auto;padding:70px 2.5rem}
+.bhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.btabs{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.btab{font-size:13px;font-weight:600;padding:7px 16px;border-radius:20px;border:1px solid var(--g200);cursor:pointer;background:var(--white);color:var(--g500);transition:all .15s}
+.btab.on{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
+.blist{display:flex;flex-direction:column;border:1px solid var(--g200);border-radius:8px;overflow:hidden}
+.bi{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1rem 1.4rem;border-bottom:1px solid var(--g100);cursor:pointer;transition:background .15s}
+.bi:last-child{border-bottom:none}.bi:hover{background:var(--blue-light)}
+.bcat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;white-space:nowrap}
+.btitle{font-size:14px;font-weight:500;color:var(--black)}
+.bsub2{font-size:12px;color:var(--g500);margin-top:2px;font-weight:300}
+.bdate{font-size:12px;color:var(--g500);white-space:nowrap}
+.nw{display:inline-block;background:var(--blue-mid);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:middle}
+.wbtn{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:4px;cursor:pointer}
+/* FOOTER */
+footer{background:var(--blue-dark);color:rgba(255,255,255,.35);padding:3rem 0}
+.fi{max-width:1280px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap}
+.flog{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.flog img{height:20px;filter:brightness(0) invert(.4)}
+.flog-t{font-family:'Bebas Neue',sans-serif;font-size:13px;color:rgba(255,255,255,.4);letter-spacing:2px}
+.finfo{font-size:12px;line-height:2.1;font-weight:300}
+.flinks{display:flex;gap:1.5rem;flex-wrap:wrap}
+.flinks a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
+.flinks a:hover{color:rgba(255,255,255,.7)}
+/* MODAL */
+.mover{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;display:none;align-items:center;justify-content:center}
+.mover.show{display:flex}
+.modal{background:#fff;border-radius:12px;padding:2.8rem 2.5rem;text-align:center;max-width:420px;width:90%}
+.mi{font-size:52px;margin-bottom:1rem}
+.mt{font-size:21px;font-weight:700;margin-bottom:8px}
+.md{font-size:13px;color:var(--g500);font-weight:300;line-height:1.8;margin-bottom:1.8rem}
+.mc{background:var(--blue-mid);color:#fff;border:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;padding:11px 36px;border-radius:4px;cursor:pointer}
+/* 토스트 */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--g800);color:#fff;font-size:13px;padding:12px 24px;border-radius:6px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+@media(max-width:700px){.hd{padding:0 1rem}.nb{font-size:11px;padding:5px 9px}.frow,.ccards{grid-template-columns:1fr}.cstats{grid-template-columns:repeat(2,1fr)}.hero-deco{font-size:180px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="logo" onclick="goPage('info')">
+      <img src="https://cdn.imweb.me/thumbnail/20260304/71799f0f2da6e.png" alt="아주약품" onerror="this.style.display='none'">
+      <div class="logo-div"></div>
+      <div class="logo-txt">제1회 걷기 및 달리기 대회<br><em>아주약품(주) · 2026</em></div>
+    </div>
+    <nav>
+      <button class="nb on" onclick="goPage('info')">대회안내</button>
+      <button class="nb"    onclick="goPage('reg')">참가신청</button>
+      <button class="nb"    onclick="goPage('course')">대회코스</button>
+      <button class="nb"    onclick="goPage('gift')">기념품</button>
+      <button class="nb"    onclick="goPage('comm')">커뮤니티</button>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE 1 대회안내 -->
+<div class="pg on" id="pg-info">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-deco">1st</div>
+    <div class="dday"><div class="dday-n" id="dd">D-?</div><div class="dday-l">대회까지</div></div>
+    <div class="hcont">
+      <div class="heyebrow">아주약품 제1회 걷기 및 달리기 대회</div>
+      <h1 class="htitle">건강한<br><span>조직</span><br>함께<span>달려</span></h1>
+      <p class="hsub">건강한 조직문화 형성을 위해 시작된 아주약품 첫 번째 러닝 축제<br>오성강변에서 동료들과 함께 특별한 하루를 만들어요</p>
+      <div class="hstats">
+        <div class="hs"><div class="hs-n">2</div><div class="hs-l">참가 종목</div></div>
+        <div class="hs"><div class="hs-n" id="hero-remain">30</div><div class="hs-l">잔여 인원</div></div>
+        <div class="hs"><div class="hs-n">5km</div><div class="hs-l">최장 코스</div></div>
+        <div class="hs"><div class="hs-n">무료</div><div class="hs-l">참가비</div></div>
+      </div>
+      <div class="hcta">
+        <button class="btnp" onclick="goPage('reg')">지금 신청하기</button>
+        <button class="btno" onclick="goPage('course')">코스 보기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="lbl">대회 개요</div><div class="ttl">대회 안내</div>
+    <div class="sub">2026 아주약품 제1회 걷기 및 달리기 대회의 주요 정보를 확인하세요</div>
+    <div class="igrid">
+      <div class="ic"><div class="ic-i">📅</div><div class="ic-lbl">대회 일시</div><div class="ic-val">2026년 5월 16일 (토)</div><div class="ic-dt">오전 8:00 출발 · 9:30 마무리<br>⚠️ 현장 접수 없음</div></div>
+      <div class="ic"><div class="ic-i">📍</div><div class="ic-lbl">장소</div><div class="ic-val">오성강변</div><div class="ic-dt">경기도 평택시 오성면 창내리 52-55<br>안성천 강변 코스</div></div>
+      <div class="ic"><div class="ic-i">🏃</div><div class="ic-lbl">참가 종목</div><div class="ic-val">5km 달리기 · 3km 걷기</div><div class="ic-dt">도전코스 (5km) / 패밀리코스 (3km)<br>전 임직원 및 가족 참여 가능</div></div>
+      <div class="ic"><div class="ic-i">🏅</div><div class="ic-lbl">시상</div><div class="ic-val">완주자 전원 메달 증정</div><div class="ic-dt">결승선 통과 시 현장 즉시 수여<br>특별 이벤트 추후 공개 🎉</div></div>
+      <div class="ic"><div class="ic-i">📝</div><div class="ic-lbl">신청 기간</div><div class="ic-val">4월 27일 ~ 5월 6일</div><div class="ic-dt">선착순 30명 · 오전 10시부터<br>정원 초과 시 조기 마감</div></div>
+      <div class="ic"><div class="ic-i">💙</div><div class="ic-lbl">참가비</div><div class="ic-val">전 직원 무료</div><div class="ic-dt">가족 동반 참가 가능<br>건강한 조직문화 복지 프로그램</div></div>
+    </div>
+  </div>
+
+  <div style="background:var(--g50);border-top:1px solid var(--g200);padding:80px 0">
+    <div class="wrap" style="padding-top:0;padding-bottom:0">
+      <div class="lbl">Schedule</div><div class="ttl">주요 일정</div>
+      <div class="sub">신청부터 대회 당일까지 놓치지 마세요</div>
+      <div class="tl">
+        <div class="tlr hi"><div class="tl-dt">4월 27일<br>월요일</div><div class="tl-dot"></div><div class="tl-body"><div class="tl-ttl">참가 신청 시작 <span class="pill pr">선착순 30명</span></div><div class="tl-desc">본 홈페이지에서 오전 10:00부터 접수 개시</div></div></div>
+        <div class="tlr"><div class="tl-dt">5월 6일<br>수요일</div><div class="tl-dot"></div><div class="tl-body"><div class="tl-ttl">참가 신청 마감</div><div class="tl-desc">정원 도달 시 조기 마감 · 접수 확인 이메일 및 문자 발송</div></div></div>
+        <div class="tlr"><div class="tl-dt">5월 13일<br>수요일</div><div class="tl-dot"></div><div class="tl-body"><div class="tl-ttl">번호표 배부</div><div class="tl-desc">구내식당 · 12:00 ~ 13:30 · ⚠️ 당일 현장 접수 없음</div></div></div>
+        <div class="tlr"><div class="tl-dt">5월 16일<br>토요일</div><div class="tl-dot"></div><div class="tl-body"><div class="tl-ttl">🏁 대회 당일</div><div class="tl-desc">08:00 출발 → 09:30 마무리 · 집결지 : 평택시 오성면 창내리 52-55</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 참가신청 -->
+<div class="pg" id="pg-reg">
+  <div class="reg-top">
+    <div class="wrap" style="padding-top:0;padding-bottom:0">
+      <div class="lbl" style="color:rgba(255,255,255,.45)">Registration</div>
+      <div class="ttl" style="color:#fff">참가 신청</div>
+      <div class="sub" style="color:rgba(255,255,255,.4)">신청 기간 : 4/27(월) ~ 5/6(수) · 선착순 30명 · 오전 10시부터</div>
+    </div>
+  </div>
+  <div class="fwrap">
+    <!-- 잔여 인원 바 -->
+    <div class="capacity-bar" id="cap-bar">
+      <span class="cap-left" id="cap-text">잔여 인원 확인 중...</span>
+      <span class="cap-right">총 정원 30명</span>
+      <div class="cap-bar"><div class="cap-fill" id="cap-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="fsec">
+      <div class="fs-ttl">개인 정보</div>
+      <div class="frow">
+        <div class="field"><label>이름 <span class="req">*</span></label><input type="text" id="f-name" placeholder="홍길동"></div>
+        <div class="field"><label>사원번호 <span class="req">*</span></label><input type="text" id="f-empno" placeholder="예: 20240001"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label>소속 부서 <span class="req">*</span></label>
+          <select id="f-dept"><option value="">부서 선택</option>
+            <option>경영기획팀</option><option>인사팀</option><option>재무팀</option><option>마케팅팀</option>
+            <option>영업팀</option><option>연구개발팀</option><option>품질관리팀</option><option>생산팀</option>
+            <option>해외사업팀</option><option>의약품사업팀</option><option>기타</option>
+          </select>
+        </div>
+        <div class="field"><label>연락처 <span class="req">*</span></label><input type="tel" id="f-phone" placeholder="010-0000-0000"></div>
+      </div>
+      <div class="field"><label>이메일 <span class="req">*</span></label><input type="email" id="f-email" placeholder="example@ajupharm.co.kr"></div>
+    </div>
+
+    <div class="fsec">
+      <div class="fs-ttl">참가 종목 선택</div>
+      <div class="ccards">
+        <label class="cc"><input type="radio" name="course" value="5km" checked>
+          <div class="cc-ey">도전 코스</div><div class="cc-dist">5KM</div>
+          <div class="cc-name">달리기</div><div class="cc-info">오성강변 왕복 5km<br>제한시간 1시간 30분</div>
+          <div class="cc-tag" style="background:#DCEFFE;color:var(--blue-mid)">🏃 달리기</div>
+        </label>
+        <label class="cc"><input type="radio" name="course" value="3km">
+          <div class="cc-ey">패밀리 코스</div><div class="cc-dist">3KM</div>
+          <div class="cc-name">걷기</div><div class="cc-info">오성강변 왕복 3km<br>가족 동반 환영 · 제한없음</div>
+          <div class="cc-tag" style="background:#E8F5E9;color:#2E7D32">🚶 걷기</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="fsec">
+      <div class="fs-ttl">추가 정보</div>
+      <div class="frow">
+        <div class="field"><label>성별 <span class="req">*</span></label>
+          <select id="f-gender"><option value="">선택</option><option>남성</option><option>여성</option></select>
+        </div>
+        <div class="field"><label>가족 동반 여부</label>
+          <select id="f-family"><option value="no">혼자 참가</option><option value="1">가족 1명 동반</option><option value="2">가족 2명 동반</option><option value="3">가족 3명 이상 동반</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>건강 특이사항 <span style="color:var(--g500);font-weight:300;font-size:12px">(선택)</span></label>
+        <textarea id="f-health" placeholder="심혈관 질환, 관절 문제 등 건강 관련 특이사항이 있으시면 기재해 주세요."></textarea>
+      </div>
+    </div>
+
+    <div class="fsec">
+      <div class="fs-ttl">약관 동의</div>
+      <div class="agree-row"><input type="checkbox" id="agree1"><label for="agree1"><span>[필수] 대회 참가 중 발생하는 부상에 대해 본인이 책임을 지겠습니다.</span></label></div>
+      <div class="agree-row"><input type="checkbox" id="agree2"><label for="agree2"><span>[필수] 대회 촬영 사진 및 영상이 사내 홍보물, 뉴스레터 등에 사용될 수 있음에 동의합니다.</span></label></div>
+      <div class="agree-row"><input type="checkbox" id="agree3"><label for="agree3"><span>[필수] 개인정보 수집 및 이용에 동의합니다. <a href="#">개인정보처리방침 보기</a></span></label></div>
+    </div>
+
+    <button class="sub-btn" id="sub-btn" onclick="submitForm()">참가 신청 완료하기</button>
+    <div class="sub-note">
+      ※ 신청 후 확인 이메일 및 문자가 발송됩니다<br>
+      ※ 번호표 : 5/13(수) 구내식당 12:00~13:30 수령 · <strong>당일 현장 접수 없음</strong><br>
+      문의 : marathon@ajupharm.co.kr
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 대회코스 -->
+<div class="pg" id="pg-course">
+  <div class="course-top">
+    <div class="wrap" style="padding-top:0;padding-bottom:0">
+      <div class="lbl" style="color:rgba(255,255,255,.45)">Race Course</div>
+      <div class="ttl" style="color:#fff">대회 코스</div>
+      <div class="sub" style="color:rgba(255,255,255,.4)">경기도 평택시 오성면 창내리 · 안성천 강변 코스</div>
+    </div>
+  </div>
+  <div class="ctabs-bar"><div class="ctabs">
+    <button class="ctab on" onclick="switchCourse(this,'c5')">🏃 도전코스 5KM</button>
+    <button class="ctab"    onclick="switchCourse(this,'c3')">🚶 패밀리코스 3KM</button>
+  </div></div>
+  <div class="ccont on" id="c5">
+    <div class="mapw">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="900" height="360" fill="#1a2a3a"/><rect width="900" height="360" fill="url(#g)"/>
+        <path d="M0 255 C200 245 400 265 600 250 C750 238 850 260 900 252 L900 360 L0 360Z" fill="rgba(0,60,120,0.5)"/>
+        <path d="M0 255 C200 245 400 265 600 250 C750 238 850 260 900 252" fill="none" stroke="rgba(75,163,227,0.35)" stroke-width="1.5"/>
+        <text x="450" y="300" fill="rgba(75,163,227,0.3)" font-size="13" font-family="sans-serif" text-anchor="middle">안성천</text>
+        <rect x="0" y="215" width="900" height="16" fill="rgba(70,90,70,0.45)"/>
+        <text x="450" y="208" fill="rgba(255,255,255,0.2)" font-size="10" font-family="sans-serif" text-anchor="middle">오성강변 제방길</text>
+        <rect x="0" y="50" width="900" height="160" fill="rgba(40,65,35,0.25)"/>
+        <line x1="90" y1="222" x2="530" y2="222" stroke="#4BA3E3" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+        <line x1="530" y1="230" x2="90" y2="230" stroke="#0072CE" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 5" opacity="0.75"/>
+        <polygon points="510,216 530,222 510,228" fill="#4BA3E3" opacity="0.9"/>
+        <polygon points="110,224 90,230 110,236" fill="#0072CE" opacity="0.75"/>
+        <circle cx="90" cy="226" r="16" fill="#0072CE" stroke="#fff" stroke-width="2.5"/>
+        <text x="90" y="231" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="700">S·F</text>
+        <rect x="18" y="188" width="144" height="24" rx="4" fill="rgba(0,50,120,0.88)"/>
+        <text x="90" y="204" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">출발 / 도착 집결지</text>
+        <circle cx="530" cy="226" r="14" fill="#003F88" stroke="#4BA3E3" stroke-width="2.5"/>
+        <text x="530" y="231" fill="white" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="700">A</text>
+        <rect x="446" y="188" width="168" height="24" rx="4" fill="rgba(0,50,120,0.88)"/>
+        <text x="530" y="204" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">반환점 A + 💧 급수대</text>
+        <text x="305" y="214" fill="rgba(75,163,227,0.85)" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="700">→ 2.5km</text>
+        <text x="305" y="244" fill="rgba(100,160,220,0.6)" font-size="11" font-family="sans-serif" text-anchor="middle">← 2.5km</text>
+        <rect x="660" y="28" width="220" height="90" rx="6" fill="rgba(0,20,50,0.75)" stroke="rgba(75,163,227,0.3)" stroke-width="1"/>
+        <text x="680" y="52" fill="rgba(255,255,255,0.85)" font-size="12" font-family="sans-serif" font-weight="700">도전코스 5KM</text>
+        <line x1="680" y1="68" x2="715" y2="68" stroke="#4BA3E3" stroke-width="3" stroke-linecap="round"/>
+        <text x="725" y="72" fill="rgba(255,255,255,0.6)" font-size="11" font-family="sans-serif">가는 길 (2.5km)</text>
+        <line x1="680" y1="88" x2="715" y2="88" stroke="#0072CE" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 4"/>
+        <text x="725" y="92" fill="rgba(255,255,255,0.6)" font-size="11" font-family="sans-serif">오는 길 (2.5km)</text>
+        <text x="680" y="110" fill="rgba(255,255,255,0.4)" font-size="10" font-family="sans-serif">총 5km · 제한 90분</text>
+      </svg>
+      <div class="map-note">📍 경기도 평택시 오성면 창내리 52-55</div>
+    </div>
+    <div class="cstats">
+      <div class="cst"><div class="cst-n">5<span class="cst-u">km</span></div><div class="cst-l">총 거리</div></div>
+      <div class="cst"><div class="cst-n">1<span class="cst-u">곳</span></div><div class="cst-l">급수대 (반환점)</div></div>
+      <div class="cst"><div class="cst-n">90<span class="cst-u">분</span></div><div class="cst-l">제한 시간</div></div>
+      <div class="cst"><div class="cst-n" style="font-size:18px;line-height:1.8">강변 평지</div><div class="cst-l">코스 특성</div></div>
+    </div>
+    <div class="cps-ttl">경유 지점</div>
+    <div class="cps">
+      <div class="cp"><div class="cp-n">S</div><div><div class="cp-name">오성강변 집결지 (출발)</div><div class="cp-s">경기도 평택시 오성면 창내리 52-55</div><span class="cpill" style="background:#DCEFFE;color:var(--blue-mid)">0km · 출발점</span></div></div>
+      <div class="cp"><div class="cp-n">A</div><div><div class="cp-name">반환점 A · 급수대</div><div class="cp-s">달리기 코스 반환점 · 급수대 1곳</div><span class="cpill" style="background:#DCEFFE;color:var(--blue-mid)">2.5km</span> <span class="cpill" style="background:#E8F5E9;color:#2E7D32;margin-left:4px">💧 급수대</span></div></div>
+      <div class="cp"><div class="cp-n">F</div><div><div class="cp-name">오성강변 집결지 (도착)</div><div class="cp-s">출발 지점으로 복귀 · 완주 메달 수여</div><span class="cpill" style="background:#DCEFFE;color:var(--blue-mid)">5km · 결승선</span></div></div>
+    </div>
+  </div>
+  <div class="ccont" id="c3">
+    <div class="mapw">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="360" fill="#1a2a3a"/><rect width="900" height="360" fill="url(#g)"/>
+        <path d="M0 255 C200 245 400 265 600 250 C750 238 850 260 900 252 L900 360 L0 360Z" fill="rgba(0,60,120,0.5)"/>
+        <path d="M0 255 C200 245 400 265 600 250" fill="none" stroke="rgba(75,163,227,0.35)" stroke-width="1.5"/>
+        <text x="450" y="300" fill="rgba(75,163,227,0.3)" font-size="13" font-family="sans-serif" text-anchor="middle">안성천</text>
+        <rect x="0" y="215" width="900" height="16" fill="rgba(70,90,70,0.45)"/>
+        <rect x="0" y="50" width="900" height="160" fill="rgba(40,65,35,0.25)"/>
+        <line x1="90" y1="222" x2="355" y2="222" stroke="#2ECC71" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+        <line x1="355" y1="230" x2="90" y2="230" stroke="#27AE60" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 5" opacity="0.75"/>
+        <polygon points="335,216 355,222 335,228" fill="#2ECC71" opacity="0.9"/>
+        <polygon points="110,224 90,230 110,236" fill="#27AE60" opacity="0.75"/>
+        <circle cx="90" cy="226" r="16" fill="#0072CE" stroke="#fff" stroke-width="2.5"/>
+        <text x="90" y="231" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="700">S·F</text>
+        <rect x="18" y="188" width="144" height="24" rx="4" fill="rgba(0,50,120,0.88)"/>
+        <text x="90" y="204" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">출발 / 도착 집결지</text>
+        <circle cx="355" cy="226" r="14" fill="#1a6b35" stroke="#2ECC71" stroke-width="2.5"/>
+        <text x="355" y="231" fill="white" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="700">B</text>
+        <rect x="280" y="188" width="150" height="24" rx="4" fill="rgba(20,80,40,0.88)"/>
+        <text x="355" y="204" fill="white" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="600">반환점 B (걷기)</text>
+        <text x="215" y="214" fill="rgba(46,204,113,0.85)" font-size="12" font-family="sans-serif" text-anchor="middle" font-weight="700">→ 1.5km</text>
+        <text x="215" y="244" fill="rgba(46,204,113,0.55)" font-size="11" font-family="sans-serif" text-anchor="middle">← 1.5km</text>
+        <rect x="660" y="28" width="220" height="90" rx="6" fill="rgba(0,20,50,0.75)" stroke="rgba(46,204,113,0.3)" stroke-width="1"/>
+        <text x="680" y="52" fill="rgba(255,255,255,0.85)" font-size="12" font-family="sans-serif" font-weight="700">패밀리코스 3KM</text>
+        <line x1="680" y1="68" x2="715" y2="68" stroke="#2ECC71" stroke-width="3" stroke-linecap="round"/>
+        <text x="725" y="72" fill="rgba(255,255,255,0.6)" font-size="11" font-family="sans-serif">가는 길 (1.5km)</text>
+        <line x1="680" y1="88" x2="715" y2="88" stroke="#27AE60" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 4"/>
+        <text x="725" y="92" fill="rgba(255,255,255,0.6)" font-size="11" font-family="sans-serif">오는 길 (1.5km)</text>
+        <text x="680" y="110" fill="rgba(255,255,255,0.4)" font-size="10" font-family="sans-serif">총 3km · 제한 없음</text>
+      </svg>
+      <div class="map-note">📍 경기도 평택시 오성면 창내리 52-55</div>
+    </div>
+    <div class="cstats">
+      <div class="cst"><div class="cst-n">3<span class="cst-u">km</span></div><div class="cst-l">총 거리</div></div>
+      <div class="cst"><div class="cst-n" style="font-size:18px;line-height:1.8">없음</div><div class="cst-l">급수대</div></div>
+      <div class="cst"><div class="cst-n" style="font-size:16px;line-height:1.8">제한없음</div><div class="cst-l">제한 시간</div></div>
+      <div class="cst"><div class="cst-n" style="font-size:16px;line-height:1.8">강변 평지</div><div class="cst-l">코스 특성</div></div>
+    </div>
+    <div class="cps-ttl">경유 지점</div>
+    <div class="cps">
+      <div class="cp"><div class="cp-n">S</div><div><div class="cp-name">오성강변 집결지 (출발)</div><div class="cp-s">경기도 평택시 오성면 창내리 52-55</div><span class="cpill" style="background:#E8F5E9;color:#2E7D32">0km</span></div></div>
+      <div class="cp"><div class="cp-n">B</div><div><div class="cp-name">반환점 B (걷기 전용)</div><div class="cp-s">걷기 코스 반환점 · 급수대 없음</div><span class="cpill" style="background:#E8F5E9;color:#2E7D32">1.5km</span></div></div>
+      <div class="cp"><div class="cp-n">F</div><div><div class="cp-name">오성강변 집결지 (도착)</div><div class="cp-s">출발 지점으로 복귀 · 완주 메달 수여</div><span class="cpill" style="background:#E8F5E9;color:#2E7D32">3km · 결승선</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 기념품 -->
+<div class="pg" id="pg-gift">
+  <div class="gift-top"><div class="wrap" style="padding-top:0;padding-bottom:0"><div class="lbl" style="color:rgba(255,255,255,.55)">Merchandise</div><div class="ttl" style="color:#fff">기념품 안내</div><div class="sub" style="color:rgba(255,255,255,.6)">완주하는 모든 분께 드리는 특별한 선물</div></div></div>
+  <div class="gift-sec">
+    <div class="lbl">완주자 기념품</div><div class="ttl">끝까지 함께한 당신을 위한 선물</div>
+    <div class="sub">결승선을 통과하는 모든 분께 드립니다 · 일부 항목은 추후 공개 예정</div>
+    <div class="ggrid">
+      <div class="gcard"><div class="gimg" style="background:linear-gradient(135deg,#f5f5ff,#dde0f8)">🏅<span class="gbadge" style="background:#C9960C;color:#fff">완주자 전원</span></div><div class="gbody"><div class="gtag">완주 메달</div><div class="gname">피니셔 메달</div><div class="gdesc">결승선 통과 시 현장에서 즉시 수여<br>아주약품 제1회 대회 기념 각인<br>목걸이 포함</div></div></div>
+      <div class="gcard soon"><div class="gimg" style="background:linear-gradient(135deg,#f0f5ff,#d8e8f8)">🎽</div><div class="gbody"><div class="gtag">러닝 키트</div><div class="gname">러너 굿즈 키트</div><div class="gdesc">번호표 핀 · 반사 밴드 등<br>세부 구성 추후 공개 예정</div><div class="gsoon-tag">Coming Soon</div></div></div>
+      <div class="gcard soon"><div class="gimg" style="background:linear-gradient(135deg,#fffbf0,#fff0cc)">🍡</div><div class="gbody"><div class="gtag">완주 간식</div><div class="gname">완주 기념 간식</div><div class="gdesc">완주 후 즐기는 특별한 간식<br>종류 추후 공개 예정</div><div class="gsoon-tag">Coming Soon</div></div></div>
+      <div class="gcard"><div class="gimg" style="background:linear-gradient(135deg,#f0f8ff,#d8eeff)">📸</div><div class="gbody"><div class="gtag">포토 서비스</div><div class="gname">공식 사진 제공</div><div class="gdesc">코스 전역 포토그래퍼 배치<br>대회 후 개인 사진 공유<br>무료 다운로드 제공</div></div></div>
+      <div class="gcard" style="border:2px dashed var(--blue-mid);background:linear-gradient(135deg,#f7fbff,#eef5fd)"><div class="gimg" style="background:transparent">🎁</div><div class="gbody"><div class="gtag">깜짝 이벤트</div><div class="gname">현장 깜짝 이벤트 ?!</div><div class="gdesc">별도 부문 시상은 없지만<br>현장에서 깜짝 이벤트가<br>준비될 수도 있어요 😊</div></div></div>
+    </div>
+    <div class="gnote"><strong>📌 안내사항</strong><br>완주 메달은 결승선 통과 시 현장에서 즉시 수여됩니다. 러닝키트 및 완주 간식은 추후 확정 후 커뮤니티를 통해 안내됩니다. 공식 사진은 대회 후 별도 링크로 공유드릴 예정입니다.</div>
+  </div>
+</div>
+
+<!-- PAGE 5 커뮤니티 -->
+<div class="pg" id="pg-comm">
+  <div class="comm-top"><div class="wrap" style="padding-top:0;padding-bottom:0"><div class="lbl" style="color:rgba(255,255,255,.4)">Community</div><div class="ttl" style="color:#fff">커뮤니티</div><div class="sub" style="color:rgba(255,255,255,.4)">함께 준비하고 응원하는 공간 · 질문, 후기, 정보를 나눠주세요</div></div></div>
+  <div class="comm-sec">
+    <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Board</div><div class="ttl" style="font-size:22px">게시판</div></div><button class="wbtn">✏️ 글쓰기</button></div>
+    <div class="btabs"><button class="btab on">전체</button><button class="btab">공지</button><button class="btab">Q&amp;A</button><button class="btab">후기</button><button class="btab">같이달려요</button></div>
+    <div class="blist">
+      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">아주약품 제1회 걷기 및 달리기 대회 참가 신청 시작! <span class="nw">NEW</span></div><div class="bsub2">운영팀 · 조회 312</div></div><div class="bdate">2026.04.27</div></div>
+      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">대회 장소 및 코스 안내 (경기도 평택시 오성강변) <span class="nw">NEW</span></div><div class="bsub2">운영팀 · 조회 245</div></div><div class="bdate">2026.04.27</div></div>
+      <div class="bi"><span class="bcat" style="background:#E0EEFA;color:#003F88">공지</span><div><div class="btitle">번호표 배부 안내 : 5/13(수) 구내식당 12:00~13:30</div><div class="bsub2">운영팀 · 조회 198</div></div><div class="bdate">2026.04.27</div></div>
+      <div class="bi"><span class="bcat" style="background:#E8F4FD;color:#1565C0">Q&amp;A</span><div><div class="btitle">가족과 함께 걷기 코스 참가도 가능한가요? <span class="nw">NEW</span></div><div class="bsub2">익명 · 조회 38 · 댓글 2</div></div><div class="bdate">2026.04.28</div></div>
+      <div class="bi"><span class="bcat" style="background:#E8F5E9;color:#2E7D32">같이달려요</span><div><div class="btitle">5km 달리기 같이 연습하실 분! 주말 아침 <span class="nw">NEW</span></div><div class="bsub2">연구개발팀 이** · 조회 44 · 댓글 5</div></div><div class="bdate">2026.04.28</div></div>
+      <div class="bi"><span class="bcat" style="background:#E8F5E9;color:#2E7D32">같이달려요</span><div><div class="btitle">평택 오성강변 주차 정보 아시는 분 계세요?</div><div class="bsub2">영업팀 박** · 조회 33 · 댓글 3</div></div><div class="bdate">2026.04.27</div></div>
+    </div>
+    <div style="margin-top:60px">
+      <div class="bhead"><div><div class="lbl" style="margin-bottom:4px">Gallery</div><div class="ttl" style="font-size:22px">갤러리</div></div></div>
+      <div style="background:var(--blue-light);border-radius:10px;padding:3rem;text-align:center;border:2px dashed var(--sky)">
+        <div style="font-size:48px;margin-bottom:1rem">📷</div>
+        <div style="font-size:16px;font-weight:700;color:var(--blue);margin-bottom:8px">제1회 대회 사진이 이곳을 채울 예정입니다</div>
+        <div style="font-size:14px;color:var(--g500);font-weight:300">5월 16일 오성강변에서의 특별한 순간들을 담아드릴게요 📸</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">
+    <div>
+      <div class="flog"><img src="https://cdn.imweb.me/thumbnail/20260304/71799f0f2da6e.png" alt="아주약품" onerror="this.style.display='none'"><div class="flog-t">제1회 걷기 및 달리기 대회 · 2026</div></div>
+      <div class="finfo">아주약품(주) 사내 대회 운영팀<br>대회 일시 : 2026년 5월 16일 (토) · 오성강변, 경기도 평택시 오성면 창내리 52-55<br>신청 기간 : 4/27(월) ~ 5/6(수) · 선착순 30명 · 문의 : marathon@ajupharm.co.kr</div>
+    </div>
+    <div class="flinks"><a href="#">개인정보처리방침</a><a href="#">이용약관</a><a href="https://www.ajupharm.co.kr" target="_blank">아주약품 홈페이지</a></div>
+  </div>
+</footer>
+
+<!-- 신청 완료 모달 -->
+<div class="mover" id="modal">
+  <div class="modal">
+    <div class="mi">🎉</div>
+    <div class="mt">신청이 완료되었습니다!</div>
+    <div class="md">아주약품 제1회 걷기 및 달리기 대회<br>참가 신청이 접수되었습니다.<br><br>📱 확인 이메일 및 문자가 발송됩니다<br>📋 번호표 : 5/13(수) 구내식당 12:00~13:30<br>⚠️ 당일 현장 접수 없음 · 번호표 필수 지참</div>
+    <button class="mc" onclick="closeModal()">확인</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- ══ Supabase + Scripts ══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// ── Supabase 설정 ──
+const SUPABASE_URL = 'https://ahtxlgtdgczdkahdsgmb.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodHhsZ3RkZ2N6ZGthaGRzZ21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4OTIxODMsImV4cCI6MjA5MjQ2ODE4M30.ayYT2B6Ij8Bc17rMoteegKpL82ouudE2__puB2ggTJc'
+const CAPACITY = 30
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+// ── 네비게이션 ──
+const NM = { info:0, reg:1, course:2, gift:3, comm:4 }
+const nbs = document.querySelectorAll('.nb')
+const pgs = document.querySelectorAll('.pg')
+function goPage(k) {
+  const i = NM[k]
+  pgs.forEach((p,j) => p.classList.toggle('on', j===i))
+  nbs.forEach((b,j) => b.classList.toggle('on', j===i))
+  window.scrollTo(0,0)
+  if (k === 'reg') loadCapacity()
+}
+function switchCourse(btn, id) {
+  document.querySelectorAll('.ctab').forEach(t => t.classList.remove('on'))
+  document.querySelectorAll('.ccont').forEach(c => c.classList.remove('on'))
+  btn.classList.add('on')
+  document.getElementById(id).classList.add('on')
+}
+document.querySelectorAll('.btab').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.btab').forEach(x => x.classList.remove('on'))
+  b.classList.add('on')
+}))
+
+// ── D-Day 계산 ──
+;(function() {
+  const target = new Date('2026-05-16')
+  const today = new Date(); today.setHours(0,0,0,0)
+  const d = Math.ceil((target - today) / 864e5)
+  const el = document.getElementById('dd')
+  if (el) el.textContent = d > 0 ? 'D-' + d : d === 0 ? 'D-Day' : '완료'
+})()
+
+// ── 잔여 인원 로드 ──
+async function loadCapacity() {
+  const { count } = await db.from('registrations').select('*', { count:'exact', head:true })
+  const used = count || 0
+  const remaining = Math.max(0, CAPACITY - used)
+  const pct = Math.min(100, (used / CAPACITY) * 100)
+
+  // 히어로 섹션
+  const heroEl = document.getElementById('hero-remain')
+  if (heroEl) heroEl.textContent = remaining
+
+  // 신청 폼 상단 바
+  const capText = document.getElementById('cap-text')
+  const capFill = document.getElementById('cap-fill')
+  const subBtn  = document.getElementById('sub-btn')
+
+  if (capText) {
+    if (remaining > 0) {
+      capText.textContent = `잔여 ${remaining}명 / ${CAPACITY}명`
+      capText.style.color = remaining <= 5 ? '#C8102E' : 'var(--blue)'
+    } else {
+      capText.textContent = '신청이 마감되었습니다'
+      capText.style.color = '#C8102E'
+    }
+  }
+  if (capFill) {
+    capFill.style.width = pct + '%'
+    if (remaining === 0) capFill.classList.add('cap-full')
+  }
+  if (subBtn && remaining === 0) {
+    subBtn.disabled = true
+    subBtn.textContent = '신청 마감되었습니다'
+  }
+}
+
+// ── 토스트 ──
+function showToast(msg, duration = 3000) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), duration)
+}
+
+// ── 참가 신청 ──
+async function submitForm() {
+  const name   = document.getElementById('f-name').value.trim()
+  const empno  = document.getElementById('f-empno').value.trim()
+  const dept   = document.getElementById('f-dept').value
+  const phone  = document.getElementById('f-phone').value.trim()
+  const email  = document.getElementById('f-email').value.trim()
+  const gender = document.getElementById('f-gender').value
+  const course = document.querySelector('input[name="course"]:checked')?.value
+  const family = document.getElementById('f-family').value
+  const health = document.getElementById('f-health').value.trim()
+
+  // 유효성 검사
+  if (!name || !empno || !dept || !phone || !email || !gender) {
+    showToast('⚠️ 필수 항목을 모두 입력해 주세요.')
+    return
+  }
+  if (!document.getElementById('agree1').checked ||
+      !document.getElementById('agree2').checked ||
+      !document.getElementById('agree3').checked) {
+    showToast('⚠️ 필수 약관에 모두 동의해 주세요.')
+    return
+  }
+
+  const btn = document.getElementById('sub-btn')
+  btn.disabled = true
+  btn.textContent = '확인 중...'
+
+  // 중복 신청 체크
+  const { data: dup } = await db.from('registrations').select('id').eq('employee_id', empno)
+  if (dup && dup.length > 0) {
+    showToast('⚠️ 이미 신청하셨습니다. 문의: marathon@ajupharm.co.kr')
+    btn.disabled = false
+    btn.textContent = '참가 신청 완료하기'
+    return
+  }
+
+  // 정원 체크
+  const { count } = await db.from('registrations').select('*', { count:'exact', head:true })
+  if ((count || 0) >= CAPACITY) {
+    showToast('⚠️ 신청 인원이 마감되었습니다.')
+    loadCapacity()
+    return
+  }
+
+  btn.textContent = '신청 중...'
+
+  // DB 저장
+  const { error } = await db.from('registrations').insert({
+    name, employee_id: empno, department: dept,
+    phone, email, course, gender,
+    family_count: family, health_notes: health
+  })
+
+  if (error) {
+    showToast('❌ 오류가 발생했습니다: ' + error.message)
+    btn.disabled = false
+    btn.textContent = '참가 신청 완료하기'
+    return
+  }
+
+  // 성공
+  document.getElementById('modal').classList.add('show')
+  loadCapacity()
+  btn.disabled = false
+  btn.textContent = '참가 신청 완료하기'
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show')
+  goPage('info')
+}
+
+// 초기 로드
+loadCapacity()
+</script>
+</body>
+</html>

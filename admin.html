@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 · 아주약품 마라톤 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#003F88;--blue-mid:#0072CE;--sky:#4BA3E3;--white:#fff;--g50:#F7F7F5;--g100:#EFEFEB;--g200:#E0E0D8;--g500:#8A8A80;--g700:#3A3A36;--g800:#12203A}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:#111;line-height:1.6;min-height:100vh}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--g800);display:flex;align-items:center;justify-content:center;z-index:100}
+.login-box{background:#fff;border-radius:12px;padding:2.5rem 2rem;text-align:center;width:340px}
+.login-logo{height:36px;margin-bottom:1.5rem}
+.login-box h2{font-size:18px;font-weight:700;margin-bottom:.4rem}
+.login-box p{font-size:13px;color:var(--g500);margin-bottom:1.5rem;font-weight:300}
+.login-box input{width:100%;padding:11px 14px;border:1px solid var(--g200);border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-size:14px;outline:none;margin-bottom:10px;transition:border-color .18s}
+.login-box input:focus{border-color:var(--blue-mid)}
+.login-btn{width:100%;padding:12px;background:var(--blue-mid);color:#fff;border:none;border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.login-btn:hover{background:var(--blue)}
+.login-err{font-size:12px;color:#C8102E;margin-top:8px;display:none}
+
+/* MAIN LAYOUT */
+#app{display:none}
+header{background:var(--g800);padding:0 2rem;height:58px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--blue-mid)}
+.h-logo{display:flex;align-items:center;gap:10px}
+.h-logo img{height:24px;filter:brightness(0) invert(1)}
+.h-logo span{font-size:13px;font-weight:600;color:rgba(255,255,255,.7)}
+.h-logout{font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;border:none;background:transparent;font-family:'Noto Sans KR',sans-serif;padding:6px 12px;border-radius:3px;transition:all .15s}
+.h-logout:hover{color:#fff;background:rgba(255,255,255,.08)}
+
+.main{max-width:1200px;margin:0 auto;padding:2rem 2rem}
+
+/* 통계 카드 */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:2rem}
+.stat{background:#fff;border-radius:8px;padding:1.4rem 1.6rem;border:1px solid var(--g200)}
+.stat-n{font-size:36px;font-weight:700;color:var(--blue-mid);line-height:1;font-variant-numeric:tabular-nums}
+.stat-l{font-size:12px;color:var(--g500);margin-top:4px;font-weight:300}
+.stat.red .stat-n{color:#C8102E}
+.stat.green .stat-n{color:#2E7D32}
+
+/* 필터 / 액션 바 */
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
+.filt{font-size:13px;font-weight:600;padding:7px 16px;border-radius:20px;border:1px solid var(--g200);cursor:pointer;background:#fff;color:var(--g500);transition:all .15s;font-family:'Noto Sans KR',sans-serif}
+.filt.on{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
+.csv-btn{font-size:13px;font-weight:600;padding:8px 18px;border-radius:4px;border:none;background:var(--blue);color:#fff;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .18s}
+.csv-btn:hover{background:var(--g800)}
+
+/* 테이블 */
+.table-wrap{background:#fff;border-radius:8px;border:1px solid var(--g200);overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--g50);padding:.9rem 1rem;text-align:left;font-size:11px;font-weight:700;color:var(--g500);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--g200);white-space:nowrap}
+td{padding:.85rem 1rem;border-bottom:1px solid var(--g100);color:#222;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--g50)}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.5px}
+.b-5km{background:#DCEFFE;color:var(--blue-mid)}
+.b-3km{background:#E8F5E9;color:#2E7D32}
+.b-m{background:#EEF;color:#555}
+.b-f{background:#FEE;color:#C44}
+.no-data{text-align:center;padding:3rem;color:var(--g500);font-size:14px;font-weight:300}
+
+/* 새로고침 */
+.refresh-btn{background:transparent;border:1px solid var(--g200);color:var(--g500);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:7px 14px;border-radius:4px;cursor:pointer;transition:all .15s}
+.refresh-btn:hover{border-color:var(--blue-mid);color:var(--blue-mid)}
+.last-updated{font-size:11px;color:var(--g500);font-weight:300}
+
+/* 로딩 */
+.loading{text-align:center;padding:3rem;color:var(--g500)}
+.spin{display:inline-block;width:24px;height:24px;border:2px solid var(--g200);border-top-color:var(--blue-mid);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- 로그인 -->
+<div id="login-screen">
+  <div class="login-box">
+    <img class="login-logo" src="https://cdn.imweb.me/thumbnail/20260304/71799f0f2da6e.png" alt="아주약품" onerror="this.style.display='none'">
+    <h2>관리자 로그인</h2>
+    <p>참가신청 현황 관리 페이지입니다</p>
+    <input type="password" id="pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="login-btn" onclick="tryLogin()">로그인</button>
+    <div class="login-err" id="pw-err">비밀번호가 올바르지 않습니다</div>
+  </div>
+</div>
+
+<!-- 메인 앱 -->
+<div id="app">
+  <header>
+    <div class="h-logo">
+      <img src="https://cdn.imweb.me/thumbnail/20260304/71799f0f2da6e.png" alt="아주약품" onerror="this.style.display='none'">
+      <span>제1회 걷기 및 달리기 대회 · 관리자</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="last-updated" id="last-updated"></span>
+      <button class="refresh-btn" onclick="loadData()">↻ 새로고침</button>
+      <button class="h-logout" onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- 통계 -->
+    <div class="stat-grid" id="stats">
+      <div class="stat"><div class="stat-n" id="s-total">-</div><div class="stat-l">총 신청자</div></div>
+      <div class="stat"><div class="stat-n" id="s-remain" style="color:#C8102E">-</div><div class="stat-l">잔여 인원 (30명 중)</div></div>
+      <div class="stat"><div class="stat-n" id="s-5km" style="color:var(--blue-mid)">-</div><div class="stat-l">도전코스 (5km)</div></div>
+      <div class="stat"><div class="stat-n" id="s-3km" style="color:#2E7D32">-</div><div class="stat-l">패밀리코스 (3km)</div></div>
+      <div class="stat"><div class="stat-n" id="s-family">-</div><div class="stat-l">가족 동반</div></div>
+    </div>
+
+    <!-- 필터 & 액션 -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="filt on" onclick="filter('all',this)">전체</button>
+        <button class="filt" onclick="filter('5km',this)">🏃 5km 달리기</button>
+        <button class="filt" onclick="filter('3km',this)">🚶 3km 걷기</button>
+        <button class="filt" onclick="filter('family',this)">👨‍👩‍👧 가족 동반</button>
+      </div>
+      <button class="csv-btn" onclick="exportCSV()">⬇ CSV 다운로드</button>
+    </div>
+
+    <!-- 테이블 -->
+    <div class="table-wrap">
+      <div class="loading" id="loading"><div class="spin"></div><br>불러오는 중...</div>
+      <table id="reg-table" style="display:none">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>이름</th>
+            <th>사원번호</th>
+            <th>부서</th>
+            <th>연락처</th>
+            <th>이메일</th>
+            <th>종목</th>
+            <th>성별</th>
+            <th>가족동반</th>
+            <th>건강특이사항</th>
+            <th>신청일시</th>
+          </tr>
+        </thead>
+        <tbody id="reg-body"></tbody>
+      </table>
+      <div class="no-data" id="no-data" style="display:none">신청 데이터가 없습니다</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://ahtxlgtdgczdkahdsgmb.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodHhsZ3RkZ2N6ZGthaGRzZ21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4OTIxODMsImV4cCI6MjA5MjQ2ODE4M30.ayYT2B6Ij8Bc17rMoteegKpL82ouudE2__puB2ggTJc'
+const ADMIN_PW = 'aju2026'  // ← 비밀번호 변경 가능
+const CAPACITY = 30
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+let allData = []
+let currentFilter = 'all'
+
+// ── 로그인 ──
+function tryLogin() {
+  const pw = document.getElementById('pw-input').value
+  if (pw === ADMIN_PW) {
+    sessionStorage.setItem('admin', '1')
+    document.getElementById('login-screen').style.display = 'none'
+    document.getElementById('app').style.display = 'block'
+    loadData()
+  } else {
+    document.getElementById('pw-err').style.display = 'block'
+    document.getElementById('pw-input').value = ''
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('admin')
+  location.reload()
+}
+
+// 자동 로그인 체크
+if (sessionStorage.getItem('admin') === '1') {
+  document.getElementById('login-screen').style.display = 'none'
+  document.getElementById('app').style.display = 'block'
+  loadData()
+}
+
+// ── 데이터 로드 ──
+async function loadData() {
+  document.getElementById('loading').style.display = 'block'
+  document.getElementById('reg-table').style.display = 'none'
+  document.getElementById('no-data').style.display = 'none'
+
+  const { data, error } = await db
+    .from('registrations')
+    .select('*')
+    .order('created_at', { ascending: true })
+
+  if (error) { alert('데이터 로드 오류: ' + error.message); return }
+
+  allData = data || []
+  updateStats()
+  renderTable(currentFilter)
+
+  const now = new Date()
+  document.getElementById('last-updated').textContent =
+    `마지막 업데이트: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`
+}
+
+// ── 통계 ──
+function updateStats() {
+  const total = allData.length
+  const c5 = allData.filter(r => r.course === '5km').length
+  const c3 = allData.filter(r => r.course === '3km').length
+  const fam = allData.filter(r => r.family_count !== 'no').length
+
+  document.getElementById('s-total').textContent = total
+  document.getElementById('s-remain').textContent = Math.max(0, CAPACITY - total)
+  document.getElementById('s-5km').textContent = c5
+  document.getElementById('s-3km').textContent = c3
+  document.getElementById('s-family').textContent = fam
+}
+
+// ── 필터 ──
+function filter(type, btn) {
+  currentFilter = type
+  document.querySelectorAll('.filt').forEach(b => b.classList.remove('on'))
+  btn.classList.add('on')
+  renderTable(type)
+}
+
+// ── 테이블 렌더 ──
+function renderTable(type) {
+  let rows = allData
+  if (type === '5km')    rows = allData.filter(r => r.course === '5km')
+  if (type === '3km')    rows = allData.filter(r => r.course === '3km')
+  if (type === 'family') rows = allData.filter(r => r.family_count !== 'no')
+
+  document.getElementById('loading').style.display = 'none'
+
+  if (rows.length === 0) {
+    document.getElementById('no-data').style.display = 'block'
+    document.getElementById('reg-table').style.display = 'none'
+    return
+  }
+
+  document.getElementById('reg-table').style.display = 'table'
+  document.getElementById('no-data').style.display = 'none'
+
+  const familyLabel = { no:'없음', 1:'1명', 2:'2명', 3:'3명 이상' }
+
+  document.getElementById('reg-body').innerHTML = rows.map((r, i) => `
+    <tr>
+      <td style="color:var(--g500);font-size:12px">${i + 1}</td>
+      <td style="font-weight:600">${r.name}</td>
+      <td style="font-family:monospace;font-size:12px;color:var(--g500)">${r.employee_id}</td>
+      <td>${r.department}</td>
+      <td style="font-size:12px">${r.phone}</td>
+      <td style="font-size:12px;color:var(--g500)">${r.email}</td>
+      <td><span class="badge ${r.course==='5km'?'b-5km':'b-3km'}">${r.course==='5km'?'🏃 5km 달리기':'🚶 3km 걷기'}</span></td>
+      <td><span class="badge ${r.gender==='남성'?'b-m':'b-f'}">${r.gender}</span></td>
+      <td style="font-size:12px">${familyLabel[r.family_count] || r.family_count}</td>
+      <td style="font-size:12px;color:var(--g500);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.health_notes||''}">${r.health_notes || '-'}</td>
+      <td style="font-size:11px;color:var(--g500);white-space:nowrap">${formatDate(r.created_at)}</td>
+    </tr>
+  `).join('')
+}
+
+function formatDate(iso) {
+  const d = new Date(iso)
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+}
+
+// ── CSV 다운로드 ──
+function exportCSV() {
+  const headers = ['#','이름','사원번호','부서','연락처','이메일','종목','성별','가족동반','건강특이사항','신청일시']
+  const familyLabel = { no:'없음', 1:'1명', 2:'2명', 3:'3명 이상' }
+  const rows = allData.map((r, i) => [
+    i + 1, r.name, r.employee_id, r.department, r.phone, r.email,
+    r.course === '5km' ? '5km 달리기' : '3km 걷기',
+    r.gender,
+    familyLabel[r.family_count] || r.family_count,
+    r.health_notes || '',
+    new Date(r.created_at).toLocaleString('ko-KR')
+  ])
+  const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n')
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `아주약품_마라톤_신청현황_${new Date().toLocaleDateString('ko-KR').replace(/\./g,'').trim()}.csv`
+  a.click()
+}
+
+// 30초마다 자동 새로고침
+setInterval(() => {
+  if (document.getElementById('app').style.display !== 'none') loadData()
+}, 30000)
+</script>
+</body>
+</html>
