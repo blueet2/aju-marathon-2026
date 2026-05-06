@@ -148,6 +148,7 @@ tr:hover td{background:var(--g50)}
         <div class="stat"><div class="stat-n" id="s-5km" style="color:var(--blue-mid)">-</div><div class="stat-l">도전코스 (5km)</div></div>
         <div class="stat"><div class="stat-n" id="s-3km" style="color:#2E7D32">-</div><div class="stat-l">패밀리코스 (3km)</div></div>
         <div class="stat"><div class="stat-n" id="s-family">-</div><div class="stat-l">가족 동반</div></div>
+      <div class="stat red"><div class="stat-n" id="s-over">-</div><div class="stat-l">정원 초과 신청</div></div>
       </div>
       <!-- 필터 & 액션 -->
       <div class="toolbar">
@@ -156,6 +157,7 @@ tr:hover td{background:var(--g50)}
           <button class="filt" onclick="filter('5km',this)">🏃 5km 달리기</button>
           <button class="filt" onclick="filter('3km',this)">🚶 3km 걷기</button>
           <button class="filt" onclick="filter('family',this)">👨‍👩‍👧 가족 동반</button>
+          <button class="filt" style="color:#C8102E;border-color:#C8102E" onclick="filter('over',this)">⚠️ 정원 초과 (31번~)</button>
         </div>
         <button class="csv-btn" onclick="exportCSV()">⬇ CSV 다운로드</button>
       </div>
@@ -271,6 +273,10 @@ function updateStats() {
   document.getElementById('s-5km').textContent = c5
   document.getElementById('s-3km').textContent = c3
   document.getElementById('s-family').textContent = fam
+  const over = allData.slice(30)
+  document.getElementById('s-over').textContent = over.length
+  // 초과 인원 있으면 빨간색 강조
+  document.getElementById('s-over').style.color = over.length > 0 ? '#C8102E' : 'var(--g500)'
 }
 
 // ── 필터 ──
@@ -287,6 +293,7 @@ function renderTable(type) {
   if (type === '5km')    rows = allData.filter(r => r.course === '5km')
   if (type === '3km')    rows = allData.filter(r => r.course === '3km')
   if (type === 'family') rows = allData.filter(r => r.family_count !== 'no')
+  if (type === 'over') rows = allData.slice(30)
 
   document.getElementById('loading').style.display = 'none'
 
@@ -301,9 +308,14 @@ function renderTable(type) {
 
   const familyLabel = { no:'없음', 1:'1명', 2:'2명', 3:'3명 이상' }
 
-  document.getElementById('reg-body').innerHTML = rows.map((r, i) => `
+  document.getElementById('reg-body').innerHTML = rows.map((r, i) => {
+    const actualIdx = allData.indexOf(r)
+    const isOver = actualIdx >= 30
+    const rowStyle = isOver ? 'background:#fff5f5' : ''
+    const overBadge = isOver ? '<span style="font-size:10px;background:#C8102E;color:#fff;padding:1px 6px;border-radius:2px;margin-left:6px">초과</span>' : ''
+    return `<tr style="${rowStyle}">
     <tr>
-      <td style="color:var(--g500);font-size:12px">${i + 1}</td>
+      <td style="color:var(--g500);font-size:12px">${actualIdx + 1}${overBadge}</td>
       <td style="font-weight:600">${r.name}</td>
       <td style="font-family:monospace;font-size:12px;color:var(--g500)">${r.employee_id}</td>
       <td>${r.department}</td>
