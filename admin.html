@@ -314,7 +314,6 @@ function renderTable(type) {
     const rowStyle = isOver ? 'background:#fff5f5' : ''
     const overBadge = isOver ? '<span style="font-size:10px;background:#C8102E;color:#fff;padding:1px 6px;border-radius:2px;margin-left:6px">초과</span>' : ''
     return `<tr style="${rowStyle}">
-    <tr>
       <td style="color:var(--g500);font-size:12px">${actualIdx + 1}${overBadge}</td>
       <td style="font-weight:600">${r.name}</td>
       <td style="font-family:monospace;font-size:12px;color:var(--g500)">${r.employee_id}</td>
@@ -326,8 +325,8 @@ function renderTable(type) {
       <td style="font-size:12px">${familyLabel[r.family_count] || r.family_count}</td>
       <td style="font-size:12px;color:var(--g500);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.health_notes||''}">${r.health_notes || '-'}</td>
       <td style="font-size:11px;color:var(--g500);white-space:nowrap">${formatDate(r.created_at)}</td>
-    </tr>
-  `).join('')
+    </tr>`
+  }).join('')
 }
 
 function formatDate(iso) {
